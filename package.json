@@ -4,6 +4,7 @@
     "dev": "nuxt"
   },
   "dependencies": {
+    "emoji-mart-vue": "^2.6.6",
     "nuxt": "^2.8.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
