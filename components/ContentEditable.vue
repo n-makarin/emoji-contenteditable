@@ -13,6 +13,7 @@
 <script>
 
 export default {
+  name: 'ContentEditable',
   props: {
     value: {
       type: String,

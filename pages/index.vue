@@ -5,16 +5,19 @@
       <content-editable 
         class="look-like-textarea"
       />
+      <emoji-picker />
     </section>
   </div>
 </template>
 
 <script>
 import ContentEditable from '../components/ContentEditable'
+import EmojiPicker from '../components/EmojiPicker'
 
 export default {
   components: {
-    ContentEditable
+    ContentEditable,
+    EmojiPicker
   },
   computed: {
   },
