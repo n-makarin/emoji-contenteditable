@@ -5,6 +5,7 @@
   },
   "dependencies": {
     "nuxt": "^2.8.1",
-    "nuxt-stylus-resources-loader": "^2.0.0"
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.1"
   }
 }
