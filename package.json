@@ -4,6 +4,7 @@
     "dev": "nuxt"
   },
   "dependencies": {
-    "nuxt": "^2.8.1"
+    "nuxt": "^2.8.1",
+    "nuxt-stylus-resources-loader": "^2.0.0"
   }
 }
