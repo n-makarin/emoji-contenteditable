@@ -1,0 +1,9 @@
+{
+  "name": "emoji-contenteditable",
+  "scripts": {
+    "dev": "nuxt"
+  },
+  "dependencies": {
+    "nuxt": "^2.8.1"
+  }
+}
