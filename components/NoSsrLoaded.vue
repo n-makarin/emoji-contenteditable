@@ -6,7 +6,6 @@
 export default {
   name: 'NoSsrLoaded',
   mounted() {
-    debugger
     this.$emit('loaded')
   }
 }

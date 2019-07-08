@@ -5,7 +5,9 @@
       <content-editable 
         class="look-like-textarea"
       />
-      <emoji-picker />
+      <emoji-picker 
+        modal-position="right"
+      />
     </section>
   </div>
 </template>

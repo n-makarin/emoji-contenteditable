@@ -16,7 +16,7 @@
     >
       <no-ssr placeholder="Loading...">
         <no-ssr-loaded @loaded="loaded = true" />
-        <!-- <emoji-picker @select="select($event)" /> -->
+        <picker set="twitter" @select="select($event)" />
       </no-ssr>
     </float-position>
   </div>
@@ -26,12 +26,14 @@
 import { mixin as clickaway } from 'vue-clickaway'
 import FloatPosition from './modal/FloatPosition'
 import NoSsrLoaded from './NoSsrLoaded'
+import { Picker } from 'emoji-mart-vue'
 
 export default {
   name: 'EmojiPicker',
   components: {
     FloatPosition,
-    NoSsrLoaded
+    NoSsrLoaded,
+    Picker
   },
   mixins: [ clickaway ],
   props: {
@@ -87,6 +89,19 @@ export default {
 </script>
 
 <style lang="stylus">
+.icon {
+  display inline-block
+  background-size contain
+  background-position center center
+  background-repeat no-repeat
+  border 0
+  outline none
+}
+.icon_smile
+  background-image: url(../assets/icon_smile.svg)
+  width: 20px
+  height: 20px
+
 .emoji-picker {
   position relative
   display inline-block

@@ -114,6 +114,7 @@ export default {
 </script>
 
 <style lang="stylus">
+$z-index-overlay = 999
 .float-position {
   opacity 0
   position absolute
