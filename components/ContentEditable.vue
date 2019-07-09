@@ -29,27 +29,27 @@ export default {
     }
   },
   computed: {
-    listeners() {
+    listeners () {
       return { ...this.$listeners, input: this.onInput }
     },
     unicodeValue: {
-      get() {
+      get () {
         return this.value
       },
-      set(newValue) {
+      set (newValue) {
         this.$emit('input', newValue)
       }
     }
   },
-  beforeUpdate() {
+  beforeUpdate () {
     if (this.value.length === 0) {
       this.$refs.contentEditable.innerHTML = ''
       return null
     }
   },
   methods: {
-    onInput(e) {
-      const innerHTML = e.target.innerHTML
+    onInput (e) {
+      // const innerHTML = e.target.innerHTML
     }
   }
 }

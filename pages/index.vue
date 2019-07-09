@@ -4,11 +4,11 @@
     <section>
       <div>
         <p>contenteditable</p>
-        <content-editable 
-          class="look-like-textarea"
+        <content-editable
           v-model="contentEditableText"
+          class="look-like-textarea"
         />
-        <emoji-picker 
+        <emoji-picker
           v-model="contentEditableText"
           modal-position="right"
         />
@@ -33,12 +33,12 @@ export default {
     ContentEditable,
     EmojiPicker
   },
-  computed: {
-  },
-  data() {
+  data () {
     return {
       contentEditableText: ''
     }
+  },
+  computed: {
   },
   methods: {
   }

@@ -5,7 +5,7 @@
 <script>
 export default {
   name: 'NoSsrLoaded',
-  mounted() {
+  mounted () {
     this.$emit('loaded')
   }
 }

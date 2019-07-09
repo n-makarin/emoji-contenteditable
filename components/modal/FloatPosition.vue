@@ -39,7 +39,7 @@ export default {
     }
   },
   computed: {
-    classObject() {
+    classObject () {
       const main = 'float-position'
       const mainOpened = main + '_opened'
       const dir = {
@@ -62,14 +62,14 @@ export default {
     }
   },
   watch: {
-    noSsrLoaded(newValue, oldValue) {
+    noSsrLoaded (newValue, oldValue) {
       if (newValue) {
         this.setStyle()
       }
     }
   },
   methods: {
-    setStyle() {
+    setStyle () {
       if (!this.position) {
         return null
       }

@@ -24,9 +24,9 @@
 
 <script>
 import { mixin as clickaway } from 'vue-clickaway'
+import { Picker } from 'emoji-mart-vue'
 import FloatPosition from './modal/FloatPosition'
 import NoSsrLoaded from './NoSsrLoaded'
-import { Picker } from 'emoji-mart-vue'
 
 export default {
   name: 'EmojiPicker',
@@ -53,7 +53,7 @@ export default {
       default: 0
     }
   },
-  data() {
+  data () {
     return {
       modalOpened: false,
       loaded: false
@@ -61,26 +61,26 @@ export default {
   },
   computed: {
     combinedText: {
-      get() {
+      get () {
         return this.value
       },
-      set(newValue) {
+      set (newValue) {
         this.$emit('input', newValue)
       }
     }
   },
   methods: {
-    toggleModal() {
+    toggleModal () {
       this.modalOpened = !this.modalOpened
     },
-    closeModal() {
+    closeModal () {
       this.modalOpened = false
     },
     /**
      * add selected emoji to the text and close picker modal
      * @param {Object} emoji Selected emoji's data object
      */
-    select(emoji) {
+    select (emoji) {
       this.combinedText = this.combinedText + emoji.native
       this.toggleModal()
     }
