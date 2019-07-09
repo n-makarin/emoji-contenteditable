@@ -114,15 +114,14 @@ export default {
 </script>
 
 <style lang="stylus">
-$z-index-overlay = 999
 .float-position {
   opacity 0
   position absolute
-  z-index -10
+  visibility hidden
   transition opacity .2s
 
   &_opened {
-    z-index $z-index-overlay
+    visibility visible
     opacity 1
   }
 
