@@ -10,7 +10,7 @@
         />
         <emoji-picker
           v-model="contentEditableText"
-          modal-position="right"
+          modal-position="bottom-right"
         />
       </div>
       <div>

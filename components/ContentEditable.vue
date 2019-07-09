@@ -28,28 +28,66 @@ export default {
       default: 'Введите текст...'
     }
   },
+  data () {
+    return {
+      event: null
+    }
+  },
   computed: {
     listeners () {
-      return { ...this.$listeners, input: this.onInput }
-    },
-    unicodeValue: {
-      get () {
-        return this.value
-      },
-      set (newValue) {
-        this.$emit('input', newValue)
+      return {
+        ...this.$listeners,
+        input: this.input,
+        paste: this.paste,
+        drop: this.drop
       }
     }
   },
   beforeUpdate () {
-    if (this.value.length === 0) {
-      this.$refs.contentEditable.innerHTML = ''
-      return null
-    }
+    console.log(this.event, 'on beforeUpdate')
+    console.log('beforeUpdate')
   },
   methods: {
-    onInput (e) {
-      // const innerHTML = e.target.innerHTML
+    input (e) {
+      this.updateValue(e.type)
+      e.preventDefault()
+      console.log('input')
+    },
+    paste (e) {
+      const pasteData = (e.clipboardData || window.clipboardData).getData('text')
+
+      const selection = window.getSelection()
+      if (!selection.rangeCount) { return false }
+      selection.deleteFromDocument()
+      selection.getRangeAt(0).insertNode(document.createTextNode(pasteData))
+      selection.removeAllRanges()
+
+      this.updateValue(e.type)
+      e.preventDefault()
+    },
+    drop (e) {
+      const dropData = e.dataTransfer.getData('Text')
+      this.$refs.contentEditable.append(dropData)
+
+      this.updateValue(e.type)
+      e.preventDefault(dropData)
+    },
+    /**
+     *
+     */
+    updateValue (eventType) {
+      this.event = eventType
+      this.$emit('input', this.$refs.contentEditable.textContent)
+    },
+    /**
+     *
+     */
+    insertNodeInSelection (data) {
+      const selection = window.getSelection()
+      if (!selection.rangeCount) { return false }
+      selection.deleteFromDocument()
+      selection.getRangeAt(0).insertNode(document.createTextNode(data))
+      selection.removeAllRanges()
     }
   }
 }
