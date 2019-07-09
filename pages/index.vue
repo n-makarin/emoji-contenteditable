@@ -2,18 +2,24 @@
   <div class="page page-index">
     <h1>Contenteditable component with twitter emoji picker</h1>
     <section>
-      <content-editable 
-        class="look-like-textarea"
-        v-model="contentEditableText"
-      />
-      <emoji-picker 
-        v-model="contentEditableText"
-        modal-position="right"
-      />
-      <textarea
-        v-model="contentEditableText"
-        type="text"
-      />
+      <div>
+        <p>contenteditable</p>
+        <content-editable 
+          class="look-like-textarea"
+          v-model="contentEditableText"
+        />
+        <emoji-picker 
+          v-model="contentEditableText"
+          modal-position="right"
+        />
+      </div>
+      <div>
+        <p>text output</p>
+        <textarea
+          v-model="contentEditableText"
+          type="text"
+        />
+      </div>
     </section>
   </div>
 </template>
@@ -43,7 +49,8 @@ export default {
 * {
   margin 0
   padding 0
-  font-family monospace
+  font-family sans-serif
+  box-sizing: border-box;
 }
 h1 {
   margin 20px
@@ -52,6 +59,18 @@ h1 {
 .page-index {
   section {
     padding 10px 20px
+    display flex
+    .emoji-picker {
+      margin 0 15px
+    }
+    textarea {
+      min-width 400px
+      min-height 60px
+    }
+    p {
+      font-size 14px
+      padding-bottom 10px
+    }
   }
 }
 </style>
