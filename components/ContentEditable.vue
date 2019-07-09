@@ -46,16 +46,10 @@ export default {
       this.$refs.contentEditable.innerHTML = ''
       return null
     }
-    // emoji.fillArea(this.$refs.contentEditable, this.value, this.emojiSize)
   },
   methods: {
     onInput(e) {
       const innerHTML = e.target.innerHTML
-      // if (dataHelpers.specSymbols.isEndingOnSpec(innerHTML)) {
-      //   return null
-      // }
-      // const inputValue = dataHelpers.specSymbols.escape(innerHTML)
-      // this.unicodeValue = emoji.parseToUnicodeValue(inputValue)
     }
   }
 }
