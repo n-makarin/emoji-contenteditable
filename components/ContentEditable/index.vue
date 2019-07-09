@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import common from './common'
 
 export default {
   name: 'ContentEditable',
@@ -44,7 +45,6 @@ export default {
     }
   },
   beforeUpdate () {
-    console.log(this.event, 'on beforeUpdate')
     console.log('beforeUpdate')
   },
   methods: {
@@ -55,14 +55,8 @@ export default {
     },
     paste (e) {
       const pasteData = (e.clipboardData || window.clipboardData).getData('text')
-
-      const selection = window.getSelection()
-      if (!selection.rangeCount) { return false }
-      selection.deleteFromDocument()
-      selection.getRangeAt(0).insertNode(document.createTextNode(pasteData))
-      selection.removeAllRanges()
-
-      this.updateValue(e.type)
+      this.append(pasteData)
+      this.updateValue(e.type, pasteData)
       e.preventDefault()
     },
     drop (e) {
@@ -73,21 +67,43 @@ export default {
       e.preventDefault(dropData)
     },
     /**
-     *
+     * Update value binded with v-model
+     * @param {String} eventType
      */
-    updateValue (eventType) {
+    updateValue (eventType, data) {
       this.event = eventType
-      this.$emit('input', this.$refs.contentEditable.textContent)
+      const ref = this.$refs.contentEditable
+      debugger
+      switch (eventType) {
+        case 'paste':
+          this.$emit('input', common.parseToString(ref.innerHTML) + data)
+          break
+        default:
+          this.$emit('input', common.parseToString(ref.innerHTML))
+      }
     },
     /**
      *
+     * @param {String} data
      */
-    insertNodeInSelection (data) {
-      const selection = window.getSelection()
-      if (!selection.rangeCount) { return false }
-      selection.deleteFromDocument()
-      selection.getRangeAt(0).insertNode(document.createTextNode(data))
-      selection.removeAllRanges()
+    append (data) {
+      const splittedContent = common.getSplittedContent(data)
+      for (let i = 0; i < splittedContent.length; i++) {
+        // text
+        if (splittedContent[i].text) {
+          this.$refs.contentEditable.append(splittedContent[i].text)
+
+        // image
+        } else if (splittedContent[i].img) {
+          const img = document.createElement('img')
+          img.src = common.getAttrValue('src', splittedContent[i].img)
+          img.alt = common.getAttrValue('alt', splittedContent[i].img)
+          img.width = this.emojiSize
+          img.height = this.emojiSize
+          this.$refs.contentEditable.appendChild(img)
+        }
+      }
+      common.setCaretEndPosition(this.$refs.contentEditable)
     }
   }
 }
