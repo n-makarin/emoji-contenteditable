@@ -55,8 +55,8 @@ export default {
     },
     paste (e) {
       const pasteData = (e.clipboardData || window.clipboardData).getData('text')
-      this.append(pasteData)
       this.updateValue(e.type, pasteData)
+      this.append(pasteData)
       e.preventDefault()
     },
     drop (e) {

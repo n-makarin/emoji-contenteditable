@@ -12,6 +12,7 @@ export default {
       const emoji = this.getAttrValue('alt', imagesList[i])
       value = value.replace(imagesList[i], emoji)
     }
+    value = this.escapeHtml(value)
     return value
   },
   /**
@@ -82,5 +83,14 @@ export default {
       }
     }
     return data
+  },
+  /**
+   * Replace symbols and html tags to equivalent string values
+   * @param {String} data
+   * @returns {String}
+   */
+  escapeHtml (data) {
+    const regexp = new RegExp('&nbsp;|<br>', 'g')
+    return data.replace(regexp, ' ')
   }
 }
