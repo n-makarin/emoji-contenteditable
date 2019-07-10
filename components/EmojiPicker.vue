@@ -40,7 +40,7 @@ export default {
   },
   mixins: [ clickaway ],
   props: {
-    // data of contenteditable field
+    // emoji
     value: {
       type: String,
       default: () => ''
@@ -62,16 +62,6 @@ export default {
       loaded: false
     }
   },
-  computed: {
-    combinedText: {
-      get () {
-        return this.value
-      },
-      set (newValue) {
-        this.$emit('input', newValue)
-      }
-    }
-  },
   methods: {
     toggleModal () {
       this.modalOpened = !this.modalOpened
@@ -80,11 +70,11 @@ export default {
       this.modalOpened = false
     },
     /**
-     * add selected emoji to the text and close picker modal
+     * Add selected emoji to the text and close picker modal
      * @param {Object} emoji Selected emoji's data object
      */
     select (emoji) {
-      this.combinedText = this.combinedText + emoji.native
+      this.$emit('input', emoji.native)
       this.toggleModal()
     }
   }
