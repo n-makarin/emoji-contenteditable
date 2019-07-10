@@ -58,9 +58,6 @@ export default {
       this.appendEmoji(emojiImage)
     }
   },
-  beforeUpdate () {
-    console.log('beforeUpdate')
-  },
   methods: {
     input (e) {
       this.updateValue(e.type)
