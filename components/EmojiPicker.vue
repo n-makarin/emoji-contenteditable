@@ -98,6 +98,7 @@ export default {
 .emoji-picker {
   position relative
   display inline-block
+  vertical-align top
   &__btn {
     cursor pointer
     vertical-align top

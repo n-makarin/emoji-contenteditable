@@ -86,19 +86,7 @@ export default {
     updateValue (eventType, data) {
       this.event = eventType
       const ref = this.$refs.contentEditable
-      switch (eventType) {
-        case 'paste':
-          this.$emit('input', common.parseToString(ref.innerHTML) + data)
-          break
-        case 'drop':
-          this.$emit('input', common.parseToString(ref.innerHTML) + data)
-          break
-        case 'selectEmoji':
-          this.$emit('input', common.parseToString(ref.innerHTML) + data)
-          break
-        default:
-          this.$emit('input', common.parseToString(ref.innerHTML))
-      }
+      this.$emit('input', common.parseToString(ref.innerHTML) + (data || ''))
     },
     /**
      * Append data to contentEditable
