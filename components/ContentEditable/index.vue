@@ -64,9 +64,8 @@ export default {
     },
     drop (e) {
       const dropData = e.dataTransfer.getData('Text')
-      this.$refs.contentEditable.append(dropData)
-
-      this.updateValue(e.type)
+      this.updateValue(e.type, dropData)
+      this.append(dropData)
       e.preventDefault(dropData)
     },
     /**
@@ -78,6 +77,9 @@ export default {
       const ref = this.$refs.contentEditable
       switch (eventType) {
         case 'paste':
+          this.$emit('input', common.parseToString(ref.innerHTML) + data)
+          break
+        case 'drop':
           this.$emit('input', common.parseToString(ref.innerHTML) + data)
           break
         default:
