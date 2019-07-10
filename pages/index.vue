@@ -6,10 +6,11 @@
         <p>contenteditable</p>
         <content-editable
           v-model="contentEditableText"
+          :emoji="selectedEmoji"
           class="look-like-textarea"
         />
         <emoji-picker
-          v-model="contentEditableText"
+          v-model="selectedEmoji"
           modal-position="bottom-right"
         />
       </div>
@@ -35,7 +36,8 @@ export default {
   },
   data () {
     return {
-      contentEditableText: ''
+      contentEditableText: '',
+      selectedEmoji: ''
     }
   },
   computed: {
