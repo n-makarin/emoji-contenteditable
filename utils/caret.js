@@ -2,6 +2,7 @@ export default {
   /**
    * Get contentEditable caret's position
    * @param {Object} editableDiv Html reference
+   * @returns { nodeIndex: {Number}, position: {Number} }
    */
   getPosition (editableDiv) {
     let caretPos = 0

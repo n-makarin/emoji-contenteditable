@@ -15,6 +15,7 @@
  * @component @/components/ContentEditable/index
  */
 import common from '@/components/ContentEditable/_common'
+// import caret from '@/utils/caret'
 
 export default {
   name: 'ContentEditable',
@@ -56,10 +57,16 @@ export default {
       this.updateValue('selectEmoji', newValue)
       const emojiImage = common.getEmojiImageTag(newValue)
       this.appendEmoji(emojiImage)
+      this.$emit('clearEmoji')
     }
   },
   methods: {
     input (e) {
+      // const ref = this.$refs.contentEditable
+      // const caretPosition = caret.getPosition(ref)
+      // const childNodes = ref.childNodes
+      // childNodes[caretPosition.nodeIndex].data = 'yo test'
+
       this.updateValue(e.type)
       e.preventDefault()
       console.log('input')

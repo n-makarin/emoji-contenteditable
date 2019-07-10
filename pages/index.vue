@@ -8,6 +8,7 @@
           v-model="contentEditableText"
           :emoji="selectedEmoji"
           class="look-like-textarea"
+          @clearEmoji="selectedEmoji = ''"
         />
         <emoji-picker
           v-model="selectedEmoji"
