@@ -25,8 +25,8 @@
 <script>
 import { mixin as clickaway } from 'vue-clickaway'
 import { Picker } from 'emoji-mart-vue'
-import FloatPosition from './modal/FloatPosition'
-import NoSsrLoaded from './NoSsrLoaded'
+import FloatPosition from '@/components/modal/FloatPosition'
+import NoSsrLoaded from '@/components/NoSsrLoaded'
 
 export default {
   name: 'EmojiPicker',

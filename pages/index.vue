@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import ContentEditable from '../components/ContentEditable/index'
-import EmojiPicker from '../components/EmojiPicker'
+import ContentEditable from '@/components/ContentEditable/index'
+import EmojiPicker from '@/components/EmojiPicker'
 
 export default {
   components: {

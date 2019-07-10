@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import common from './common'
+import common from '@/components/ContentEditable/_common'
 
 export default {
   name: 'ContentEditable',
@@ -73,7 +73,6 @@ export default {
     updateValue (eventType, data) {
       this.event = eventType
       const ref = this.$refs.contentEditable
-      debugger
       switch (eventType) {
         case 'paste':
           this.$emit('input', common.parseToString(ref.innerHTML) + data)
