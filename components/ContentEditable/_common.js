@@ -7,35 +7,13 @@ export default {
    * @returns {String}
    */
   parseToString (value) {
-    const imagesList = this.getImagesList(value)
+    const imagesList = getImagesList(value)
     for (let i = 0; i < imagesList.length; i++) {
-      const emoji = this.getAttrValue('alt', imagesList[i])
+      const emoji = getAttrValue('alt', imagesList[i])
       value = value.replace(imagesList[i], emoji)
     }
-    value = this.escapeHtml(value)
+    value = escapeHtml(value)
     return value
-  },
-  /**
-   * Parses string and returns images array
-   * @param {String} string
-   * @returns {Array}
-   */
-  getImagesList (string) {
-    const imageRegex = /<img[^>]* src="([^"]*)"[^>]*>/ig
-    return string.match(imageRegex) || []
-  },
-  /**
-   * Returns attribute value from tag, represented as string
-   * @param {String} attr
-   * @param {String} tagString
-   * @returns {String}
-   */
-  getAttrValue (attr, tagString) {
-    const attribute = attr + '="'
-    const beginning = tagString.indexOf(attribute) + attribute.length
-    const content = tagString.slice(beginning, tagString.length)
-    const ending = content.indexOf('"')
-    return content.slice(0, ending)
   },
   /**
    * Set caret end position in editable area
@@ -60,7 +38,7 @@ export default {
    */
   getSplittedContent (data) {
     data = twemoji.parse(data)
-    const imageList = this.getImagesList(data)
+    const imageList = getImagesList(data)
     const imgKey = '[[img]]'
     const splitter = '[[/]]'
     let imageCounter = 0
@@ -83,14 +61,37 @@ export default {
       }
     }
     return data
-  },
-  /**
-   * Replace symbols and html tags to equivalent string values
-   * @param {String} data
-   * @returns {String}
-   */
-  escapeHtml (data) {
-    const regexp = new RegExp('&nbsp;|<br>', 'g')
-    return data.replace(regexp, ' ')
   }
+}
+
+/**
+ * Replace symbols and html tags to equivalent string values
+ * @param {String} data
+ * @returns {String}
+ */
+function escapeHtml (data) {
+  const regexp = new RegExp('&nbsp;|<br>', 'g')
+  return data.replace(regexp, ' ')
+}
+/**
+ * Parses string and returns images array
+ * @param {String} string
+ * @returns {Array}
+ */
+function getImagesList (string) {
+  const imageRegex = /<img[^>]* src="([^"]*)"[^>]*>/ig
+  return string.match(imageRegex) || []
+}
+/**
+* Returns attribute value from tag, represented as string
+* @param {String} attr
+* @param {String} tagString
+* @returns {String}
+*/
+function getAttrValue (attr, tagString) {
+  const attribute = attr + '="'
+  const beginning = tagString.indexOf(attribute) + attribute.length
+  const content = tagString.slice(beginning, tagString.length)
+  const ending = content.indexOf('"')
+  return content.slice(0, ending)
 }
