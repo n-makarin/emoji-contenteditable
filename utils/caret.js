@@ -33,6 +33,22 @@ export default {
       nodeIndex: getNodeIndex(editableDiv, sel.anchorNode.data),
       position: caretPos
     }
+  },
+  /**
+   * Set caret end position in editable area
+   * @param {Object} el Element target
+   */
+  setEndPosition (el) {
+    el.focus()
+    if (!(window.getSelection && document.createRange)) {
+      return null
+    }
+    const range = document.createRange()
+    range.selectNodeContents(el)
+    range.collapse(false)
+    const sel = window.getSelection()
+    sel.removeAllRanges()
+    sel.addRange(range)
   }
 }
 

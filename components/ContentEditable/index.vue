@@ -15,7 +15,7 @@
  * @component @/components/ContentEditable/index
  */
 import common from '@/components/ContentEditable/_common'
-// import caret from '@/utils/caret'
+import caret from '@/utils/caret'
 
 export default {
   name: 'ContentEditable',
@@ -66,10 +66,9 @@ export default {
       // const caretPosition = caret.getPosition(ref)
       // const childNodes = ref.childNodes
       // childNodes[caretPosition.nodeIndex].data = 'yo test'
-
+      this.removeLastBrTag()
       this.updateValue(e.type)
       e.preventDefault()
-      console.log('input')
     },
     paste (e) {
       const pasteData = (e.clipboardData || window.clipboardData).getData('text')
@@ -108,19 +107,31 @@ export default {
           this.appendEmoji(splittedContent[i].img)
         }
       }
-      common.setCaretEndPosition(this.$refs.contentEditable)
+      caret.setEndPosition(this.$refs.contentEditable)
     },
     /**
      * Append emoji to contentEditable
      * @param {String} emoji Image tag
      */
     appendEmoji (emoji) {
+      if (!emoji || emoji.length === 0) { return null }
       const img = document.createElement('img')
       img.src = common.getAttrValue('src', emoji)
       img.alt = common.getAttrValue('alt', emoji)
       img.width = this.emojiSize
       img.height = this.emojiSize
       this.$refs.contentEditable.appendChild(img)
+    },
+    /**
+     * Replace double <br> tags to one <br>
+     */
+    removeLastBrTag () {
+      const ref = this.$refs.contentEditable
+      const brTags = '<br><br>'
+      if (ref.innerHTML.slice(-brTags.length) === brTags) {
+        ref.innerHTML = ref.innerHTML.replace(new RegExp(brTags, 'g'), '<br>')
+        caret.setEndPosition(ref)
+      }
     }
   }
 }
