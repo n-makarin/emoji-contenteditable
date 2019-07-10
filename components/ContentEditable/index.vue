@@ -23,6 +23,10 @@ export default {
       type: String,
       default: ''
     },
+    emoji: {
+      type: String,
+      default: () => null
+    },
     emojiSize: {
       type: Number,
       default: 18
@@ -47,6 +51,13 @@ export default {
       }
     }
   },
+  watch: {
+    emoji (newValue, oldValue) {
+      this.updateValue('selectEmoji', newValue)
+      const emojiImage = common.getEmojiImageTag(newValue)
+      this.appendEmoji(emojiImage)
+    }
+  },
   beforeUpdate () {
     console.log('beforeUpdate')
   },
@@ -59,13 +70,13 @@ export default {
     paste (e) {
       const pasteData = (e.clipboardData || window.clipboardData).getData('text')
       this.updateValue(e.type, pasteData)
-      this.append(pasteData)
+      this.appendContent(pasteData)
       e.preventDefault()
     },
     drop (e) {
       const dropData = e.dataTransfer.getData('Text')
       this.updateValue(e.type, dropData)
-      this.append(dropData)
+      this.appendContent(dropData)
       e.preventDefault(dropData)
     },
     /**
@@ -82,32 +93,42 @@ export default {
         case 'drop':
           this.$emit('input', common.parseToString(ref.innerHTML) + data)
           break
+        case 'selectEmoji':
+          this.$emit('input', common.parseToString(ref.innerHTML) + data)
+          break
         default:
           this.$emit('input', common.parseToString(ref.innerHTML))
       }
     },
     /**
-     *
+     * Append data to contentEditable
      * @param {String} data
      */
-    append (data) {
+    appendContent (data) {
       const splittedContent = common.getSplittedContent(data)
       for (let i = 0; i < splittedContent.length; i++) {
         // text
         if (splittedContent[i].text) {
           this.$refs.contentEditable.append(splittedContent[i].text)
 
-        // image
+        // emoji
         } else if (splittedContent[i].img) {
-          const img = document.createElement('img')
-          img.src = common.getAttrValue('src', splittedContent[i].img)
-          img.alt = common.getAttrValue('alt', splittedContent[i].img)
-          img.width = this.emojiSize
-          img.height = this.emojiSize
-          this.$refs.contentEditable.appendChild(img)
+          this.appendEmoji(splittedContent[i].img)
         }
       }
       common.setCaretEndPosition(this.$refs.contentEditable)
+    },
+    /**
+     * Append emoji to contentEditable
+     * @param {String} emoji Image tag
+     */
+    appendEmoji (emoji) {
+      const img = document.createElement('img')
+      img.src = common.getAttrValue('src', emoji)
+      img.alt = common.getAttrValue('alt', emoji)
+      img.width = this.emojiSize
+      img.height = this.emojiSize
+      this.$refs.contentEditable.appendChild(img)
     }
   }
 }
