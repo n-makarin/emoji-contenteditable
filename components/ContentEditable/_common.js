@@ -74,6 +74,14 @@ export default {
     const content = tagString.slice(beginning, tagString.length)
     const ending = content.indexOf('"')
     return content.slice(0, ending)
+  },
+  /**
+   * Returns string emoji's image tag
+   * @param {String} emojiNative
+   * @returns {String}
+   */
+  getEmojiImageTag (emojiNative) {
+    return twemoji.parse(emojiNative)
   }
 }
 
