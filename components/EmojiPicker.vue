@@ -23,6 +23,9 @@
 </template>
 
 <script>
+/**
+ * @component @/components/EmojiPicker
+ */
 import { mixin as clickaway } from 'vue-clickaway'
 import { Picker } from 'emoji-mart-vue'
 import FloatPosition from '@/components/modal/FloatPosition'

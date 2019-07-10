@@ -5,6 +5,9 @@
 </template>
 
 <script>
+/**
+ * @component @/components/modal/FloatPosition
+ */
 const positionTypes = {
   top: 'top',
   right: 'right',

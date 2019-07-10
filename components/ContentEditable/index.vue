@@ -11,6 +11,9 @@
 </template>
 
 <script>
+/**
+ * @component @/components/ContentEditable/index
+ */
 import common from '@/components/ContentEditable/_common'
 
 export default {

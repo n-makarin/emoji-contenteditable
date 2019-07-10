@@ -3,6 +3,9 @@
 </template>
 
 <script>
+/**
+ * @component @/components/NoSsrLoaded
+ */
 export default {
   name: 'NoSsrLoaded',
   mounted () {
