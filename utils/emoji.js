@@ -2,7 +2,7 @@ import twemoji from 'twemoji'
 
 export default {
   /**
-   *
+   * Fill referenced area with parsed content
    * @param {String} text
    * @param {Object} ref Html reference
    * @param {Number} emojiSize
@@ -52,7 +52,10 @@ export default {
     return data
   },
   /**
-   *
+   * Append emoji to reference
+   * @param {String} emoji Image tag
+   * @param {Object} ref Html reference
+   * @param {Number} emojiSize
    */
   appendEmoji (emoji, ref, emojiSize) {
     if (!emoji || emoji.length === 0) { return null }
