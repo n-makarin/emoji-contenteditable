@@ -5,8 +5,10 @@
   >
     <span
       class="emoji-picker__btn icon icon_smile"
-      @click="toggleModal()"
+      @mousedown="mousedown($event)"
+      @mouseup="mouseup($event)"
     />
+    <!-- @click="click($event)" -->
 
     <float-position
       v-model="modalOpened"
@@ -76,6 +78,13 @@ export default {
     select (emoji) {
       this.$emit('input', emoji.native)
       this.toggleModal()
+    },
+    mousedown (e) {
+      this.toggleModal()
+      e.target.classList.add('on-mousedown')
+    },
+    mouseup (e) {
+      e.target.classList.remove('on-mousedown')
     }
   }
 }
@@ -103,6 +112,11 @@ export default {
     cursor pointer
     vertical-align top
   }
+}
+
+.on-mousedown {
+  filter brightness(0.7)
+  transition filter .05s easy-in
 }
 
 /* emoji-picker styles remolding */
