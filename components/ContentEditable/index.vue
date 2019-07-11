@@ -62,10 +62,6 @@ export default {
   },
   methods: {
     input (e) {
-      // const ref = this.$refs.contentEditable
-      // const caretPosition = caret.getPosition(ref)
-      // const childNodes = ref.childNodes
-      // childNodes[caretPosition.nodeIndex].data = 'yo test'
       this.removeLastBrTag()
       this.updateValue(e.type)
       e.preventDefault()
@@ -73,7 +69,7 @@ export default {
     paste (e) {
       const pasteData = (e.clipboardData || window.clipboardData).getData('text')
       this.updateValue(e.type, pasteData)
-      this.appendContent(pasteData)
+      this.addContentTo(pasteData)
       e.preventDefault()
     },
     drop (e) {
@@ -110,6 +106,49 @@ export default {
       caret.setEndPosition(this.$refs.contentEditable)
     },
     /**
+     *
+     */
+    addContentTo (data) {
+      const ref = this.$refs.contentEditable
+      const refContent = common.parseToString(ref.innerHTML)
+      const caretPosition = caret.getPosition(ref)
+      const childNodes = this.childNodesToString(ref.childNodes)
+
+      console.log(refContent, caretPosition, childNodes)
+      /*
+      const splittedContent = common.getSplittedContent(data)
+      const node = this.getNode(childNodes, caretPosition)
+
+      let dataBeginning = ''
+      let dataEnding = ''
+      if (node && node.name === '#text') {
+        dataBeginning = node.data.slice(0, caretPosition.position)
+        dataEnding = node.data.slice(caretPosition.position, node.data.length - 1)
+      }
+      for (let i = 0; i < splittedContent.length; i++) {
+        // text
+        if (splittedContent[i].text) {
+          if (!(node && node.name !== '#text')) {
+            this.$refs.contentEditable.append(splittedContent[i].text)
+            return null
+          }
+          node.data = dataBeginning + splittedContent[i].text + dataEnding
+          if (node && node.name === '#text') {
+            childNodes[caretPosition.nodeIndex].data = node.data
+          } else {
+            // уберу вставку или изменю..
+            // this.$refs.contentEditable.childNodes = addToNodeList(childNodes, caretPosition.nodeIndex, node.data)
+          }
+
+        // emoji
+        } else if (splittedContent[i].img) {
+          this.appendEmoji(splittedContent[i].img)
+        }
+      }
+      caret.setEndPosition(this.$refs.contentEditable)
+     */
+    },
+    /**
      * Append emoji to contentEditable
      * @param {String} emoji Image tag
      */
@@ -132,6 +171,35 @@ export default {
         ref.innerHTML = ref.innerHTML.replace(new RegExp(brTags, 'g'), '<br>')
         caret.setEndPosition(ref)
       }
+    },
+    /**
+     *
+     */
+    getNode (childNodes, caretPosition) {
+      if (childNodes.length === 0) { return null }
+      return {
+        name: childNodes[caretPosition.nodeIndex].nodeName || null,
+        data: childNodes[caretPosition.nodeIndex].data || null
+      }
+    },
+    /**
+     * Combine child nodes and return string with it's values
+     * @param {Object} childNodes nodeList
+     * @returns {String}
+     */
+    childNodesToString (childNodes) {
+      childNodes = Array.prototype.slice.call(childNodes)
+      let combinedNodes = ''
+      for (let i = 0; i < childNodes.length; i++) {
+        if (childNodes[i].nodeName === '#text') {
+          combinedNodes = combinedNodes + childNodes[i].data
+        } else if (childNodes[i].nodeName === 'BR') {
+          combinedNodes = combinedNodes + ' '
+        } else if (childNodes[i].nodeName === 'IMG') {
+          combinedNodes = combinedNodes + childNodes[i].alt
+        }
+      }
+      return combinedNodes
     }
   }
 }
