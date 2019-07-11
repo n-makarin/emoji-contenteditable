@@ -25,17 +25,17 @@
     </section>
     <h1>Text with emoji</h1>
     <section class="with-emoji">
-      <span class="with-emoji__item with-emoji__item_native">Hi! 🙂 What's up? It's nice to see you! 🤗</span>
+      <span class="with-emoji__item with-emoji__item_native">{{ textWithEmoji }}</span>
       <text-with-emoji
         class="with-emoji__item with-emoji__item_twitter"
-        text="Hi! 🙂 What's up? It's nice to see you! 🤗"
+        :text="textWithEmoji"
       />
     </section>
   </div>
 </template>
 
 <script>
-import ContentEditable from '@/components/ContentEditable/index'
+import ContentEditable from '@/components/ContentEditable'
 import EmojiPicker from '@/components/EmojiPicker'
 import TextWithEmoji from '@/components/TextWithEmoji'
 
@@ -48,12 +48,9 @@ export default {
   data () {
     return {
       contentEditableText: '',
-      selectedEmoji: ''
+      selectedEmoji: '',
+      textWithEmoji: 'Hi! 🙂 What\'s up? It\'s nice to see you! 🤗'
     }
-  },
-  computed: {
-  },
-  methods: {
   }
 }
 </script>
