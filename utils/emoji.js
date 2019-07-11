@@ -66,6 +66,7 @@ export default {
       'width: ' + emojiSize + 'px;' +
       'height: ' + emojiSize + 'px;' +
       'display: inline-block;' +
+      'vertical-align: text-bottom;' +
       'margin: 0 1px;'
     )
     ref.appendChild(img)
