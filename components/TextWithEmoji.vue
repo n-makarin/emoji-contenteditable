@@ -1,17 +1,23 @@
 <template>
-  <div class="text-with-emoji" />
+  <span ref="container" class="text-with-emoji" />
 </template>
 
 <script>
-// import emoji from '@/utils/emoji'
+import emoji from '@/utils/emoji'
 
 export default {
-  data () {
-    return {
+  props: {
+    text: {
+      type: String,
+      default: ''
+    },
+    emojiSize: {
+      type: Number,
+      default: 18
     }
+  },
+  mounted () {
+    emoji.fillArea(this.text, this.$refs.container, this.emojiSize)
   }
 }
 </script>
-
-<style lang="stylus" scoped>
-</style>
