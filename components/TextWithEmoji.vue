@@ -3,7 +3,9 @@
     ref="container"
     class="text-with-emoji"
     :style="styleObject"
-  />
+  >
+    {{ showText ? text : '' }}
+  </span>
 </template>
 
 <script>
@@ -22,7 +24,10 @@ export default {
   },
   data () {
     return {
-      styleObject: { visibility: 'hidden' }
+      // it's allows to reserve content space
+      // while page is not loaded yet
+      styleObject: { visibility: 'hidden' },
+      showText: true
     }
   },
   computed: {
@@ -36,6 +41,7 @@ export default {
     }
   },
   mounted () {
+    this.showText = false
     emoji.fillArea(this.text, this.$refs.container, this.emojiSize)
     this.isReady = true
   }
