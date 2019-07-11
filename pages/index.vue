@@ -33,8 +33,8 @@
         {{ text }}
       </span>
       <text-with-emoji
-        v-for="(text, key) in textWithEmoji"
-        :key="key"
+        v-for="text in textWithEmoji"
+        :key="text.length * 3"
         class="with-emoji__item with-emoji__item_twitter"
         :text="text"
       />
