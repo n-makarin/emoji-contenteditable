@@ -54,7 +54,10 @@ export default {
   },
   watch: {
     emoji (newValue, oldValue) {
+      if (newValue.length === 0) { return null }
+      debugger
       this.updateValue('selectEmoji', newValue)
+      this.removeLastBrTag()
       const emojiImage = common.getEmojiImageTag(newValue)
       this.appendEmoji(emojiImage)
       this.$emit('clearEmoji')
@@ -62,14 +65,13 @@ export default {
   },
   methods: {
     input (e) {
-      this.removeLastBrTag()
       this.updateValue(e.type)
       e.preventDefault()
     },
     paste (e) {
       const pasteData = (e.clipboardData || window.clipboardData).getData('text')
       this.updateValue(e.type, pasteData)
-      this.addContentTo(pasteData)
+      this.appendContent(pasteData)
       e.preventDefault()
     },
     drop (e) {
@@ -92,6 +94,7 @@ export default {
      * @param {String} data
      */
     appendContent (data) {
+      this.removeLastBrTag()
       const splittedContent = common.getSplittedContent(data)
       for (let i = 0; i < splittedContent.length; i++) {
         // text
@@ -106,47 +109,9 @@ export default {
       caret.setEndPosition(this.$refs.contentEditable)
     },
     /**
-     *
+     * TODO-nmak: figure out with pasting data to nodes
      */
     addContentTo (data) {
-      const ref = this.$refs.contentEditable
-      const refContent = common.parseToString(ref.innerHTML)
-      const caretPosition = caret.getPosition(ref)
-      const childNodes = this.childNodesToString(ref.childNodes)
-
-      console.log(refContent, caretPosition, childNodes)
-      /*
-      const splittedContent = common.getSplittedContent(data)
-      const node = this.getNode(childNodes, caretPosition)
-
-      let dataBeginning = ''
-      let dataEnding = ''
-      if (node && node.name === '#text') {
-        dataBeginning = node.data.slice(0, caretPosition.position)
-        dataEnding = node.data.slice(caretPosition.position, node.data.length - 1)
-      }
-      for (let i = 0; i < splittedContent.length; i++) {
-        // text
-        if (splittedContent[i].text) {
-          if (!(node && node.name !== '#text')) {
-            this.$refs.contentEditable.append(splittedContent[i].text)
-            return null
-          }
-          node.data = dataBeginning + splittedContent[i].text + dataEnding
-          if (node && node.name === '#text') {
-            childNodes[caretPosition.nodeIndex].data = node.data
-          } else {
-            // уберу вставку или изменю..
-            // this.$refs.contentEditable.childNodes = addToNodeList(childNodes, caretPosition.nodeIndex, node.data)
-          }
-
-        // emoji
-        } else if (splittedContent[i].img) {
-          this.appendEmoji(splittedContent[i].img)
-        }
-      }
-      caret.setEndPosition(this.$refs.contentEditable)
-     */
     },
     /**
      * Append emoji to contentEditable
@@ -166,9 +131,9 @@ export default {
      */
     removeLastBrTag () {
       const ref = this.$refs.contentEditable
-      const brTags = '<br><br>'
-      if (ref.innerHTML.slice(-brTags.length) === brTags) {
-        ref.innerHTML = ref.innerHTML.replace(new RegExp(brTags, 'g'), '<br>')
+      const brTag = '<br>'
+      if (ref.innerHTML.slice(-brTag.length) === brTag) {
+        ref.innerHTML = ref.innerHTML.slice(0, ref.innerHTML.length - brTag.length)
         caret.setEndPosition(ref)
       }
     },
