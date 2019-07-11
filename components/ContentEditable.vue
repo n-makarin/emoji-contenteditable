@@ -12,7 +12,7 @@
 
 <script>
 /**
- * @component @/components/ContentEditable/index
+ * @component @/components/ContentEditable
  */
 import emoji from '@/utils/emoji'
 import caret from '@/utils/caret'
