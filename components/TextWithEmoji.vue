@@ -10,7 +10,9 @@
 
 <script>
 import emoji from '@/utils/emoji'
-
+/**
+ * @component components/TextWithEmoji
+ */
 export default {
   props: {
     text: {
