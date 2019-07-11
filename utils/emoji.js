@@ -62,8 +62,12 @@ export default {
     const img = document.createElement('img')
     img.src = this.getAttrValue('src', emoji)
     img.alt = this.getAttrValue('alt', emoji)
-    img.width = emojiSize
-    img.height = emojiSize
+    img.setAttribute('style',
+      'width: ' + emojiSize + 'px;' +
+      'height: ' + emojiSize + 'px;' +
+      'display: inline-block;' +
+      'margin: 0 1px;'
+    )
     ref.appendChild(img)
   },
   /**
