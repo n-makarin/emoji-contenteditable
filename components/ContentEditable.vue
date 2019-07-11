@@ -14,7 +14,7 @@
 /**
  * @component @/components/ContentEditable/index
  */
-import common from '@/components/ContentEditable/_common'
+import emoji from '@/utils/emoji'
 import caret from '@/utils/caret'
 
 export default {
@@ -55,11 +55,10 @@ export default {
   watch: {
     emoji (newValue, oldValue) {
       if (newValue.length === 0) { return null }
-      debugger
       this.updateValue('selectEmoji', newValue)
       this.removeLastBrTag()
-      const emojiImage = common.getEmojiImageTag(newValue)
-      this.appendEmoji(emojiImage)
+      const emojiImage = emoji.getEmojiImageTag(newValue)
+      emoji.appendEmoji(emojiImage, this.$refs.contentEditable, this.emojiSize)
       this.$emit('clearEmoji')
     }
   },
@@ -87,7 +86,7 @@ export default {
     updateValue (eventType, data) {
       this.event = eventType
       const ref = this.$refs.contentEditable
-      this.$emit('input', common.parseToString(ref.innerHTML) + (data || ''))
+      this.$emit('input', emoji.parseToString(ref.innerHTML) + (data || ''))
     },
     /**
      * Append data to contentEditable
@@ -95,36 +94,13 @@ export default {
      */
     appendContent (data) {
       this.removeLastBrTag()
-      const splittedContent = common.getSplittedContent(data)
-      for (let i = 0; i < splittedContent.length; i++) {
-        // text
-        if (splittedContent[i].text) {
-          this.$refs.contentEditable.append(splittedContent[i].text)
-
-        // emoji
-        } else if (splittedContent[i].img) {
-          this.appendEmoji(splittedContent[i].img)
-        }
-      }
+      emoji.fillArea(data, this.$refs.contentEditable, this.emojiSize)
       caret.setEndPosition(this.$refs.contentEditable)
     },
     /**
      * TODO-nmak: figure out with pasting data to nodes
      */
     addContentTo (data) {
-    },
-    /**
-     * Append emoji to contentEditable
-     * @param {String} emoji Image tag
-     */
-    appendEmoji (emoji) {
-      if (!emoji || emoji.length === 0) { return null }
-      const img = document.createElement('img')
-      img.src = common.getAttrValue('src', emoji)
-      img.alt = common.getAttrValue('alt', emoji)
-      img.width = this.emojiSize
-      img.height = this.emojiSize
-      this.$refs.contentEditable.appendChild(img)
     },
     /**
      * Replace double <br> tags to one <br>
