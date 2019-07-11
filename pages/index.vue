@@ -104,6 +104,7 @@ h1 {
   .with-emoji {
     &__item {
       position relative
+      margin 5px 0
 
       &:before {
         position absolute
