@@ -25,10 +25,18 @@
     </section>
     <h1>Text with emoji</h1>
     <section class="with-emoji">
-      <span class="with-emoji__item with-emoji__item_native">{{ textWithEmoji }}</span>
+      <span
+        v-for="(text, key) in textWithEmoji"
+        :key="key"
+        class="with-emoji__item with-emoji__item_native"
+      >
+        {{ text }}
+      </span>
       <text-with-emoji
+        v-for="(text, key) in textWithEmoji"
+        :key="key"
         class="with-emoji__item with-emoji__item_twitter"
-        :text="textWithEmoji"
+        :text="text"
       />
     </section>
   </div>
@@ -49,7 +57,11 @@ export default {
     return {
       contentEditableText: '',
       selectedEmoji: '',
-      textWithEmoji: 'Hi! 🙂 What\'s up? It\'s nice to see you! 🤗'
+      textWithEmoji: [
+        'Hi! 🙂 What\'s up? It\'s nice to read you! 🤗',
+        'It was so brilliant idea 💎, thank\'s a lot! 👏',
+        'Vue is awesome🤟'
+      ]
     }
   }
 }
@@ -106,6 +118,10 @@ h1 {
       position relative
       margin 5px 0
 
+      &:nth-child(3) {
+        margin-bottom 15px
+      }
+
       &:before {
         position absolute
         top 50%
@@ -119,9 +135,14 @@ h1 {
         font-weight 600
       }
 
-      &_native:before {
-        content: 'native'
-        background #ffc83d
+      &_native {
+        &:last-child {
+          margin-bottom 15px
+        }
+        &:before {
+          content: 'native'
+          background #ffc83d
+        }
       }
       &_twitter:before {
         content: 'twitter'
