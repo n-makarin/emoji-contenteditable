@@ -105,13 +105,10 @@ export default {
      * @param {String} data
      */
     addInside (data) {
-      const ref = this.$refs.contentEditable
       this.removeLastBrTag()
-      debugger
-
+      const ref = this.$refs.contentEditable
       const caretPosition = caret.getPosition(ref)
-
-      console.log(caretPosition)
+      emoji.addInsideChildNodes(ref, data, caretPosition, this.emojiSize)
     },
     /**
      * Replace double <br> tags to one <br>
