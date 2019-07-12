@@ -53,6 +53,9 @@ export default {
     }
   },
   watch: {
+    /**
+     * Add emoji from emojiPicker
+     */
     emoji (newValue, oldValue) {
       if (newValue.length === 0) { return null }
       this.updateValue('selectEmoji', newValue)
@@ -97,9 +100,7 @@ export default {
       emoji.fillArea(data, this.$refs.contentEditable, this.emojiSize)
       caret.setEndPosition(this.$refs.contentEditable)
     },
-    /**
-     * TODO-nmak: figure out with pasting data to nodes
-     */
+    // TODO-namak: figure out with pasting data to nodes
     addContentTo (data) {
     },
     /**
@@ -111,16 +112,6 @@ export default {
       if (ref.innerHTML.slice(-brTag.length) === brTag) {
         ref.innerHTML = ref.innerHTML.slice(0, ref.innerHTML.length - brTag.length)
         caret.setEndPosition(ref)
-      }
-    },
-    /**
-     *
-     */
-    getNode (childNodes, caretPosition) {
-      if (childNodes.length === 0) { return null }
-      return {
-        name: childNodes[caretPosition.nodeIndex].nodeName || null,
-        data: childNodes[caretPosition.nodeIndex].data || null
       }
     },
     /**
