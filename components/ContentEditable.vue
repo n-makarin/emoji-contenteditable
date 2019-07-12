@@ -73,7 +73,7 @@ export default {
     paste (e) {
       const pasteData = (e.clipboardData || window.clipboardData).getData('text')
       this.updateValue(e.type, pasteData)
-      this.appendContent(pasteData)
+      this.addInside(pasteData)
       e.preventDefault()
     },
     drop (e) {
@@ -100,8 +100,18 @@ export default {
       emoji.fillArea(data, this.$refs.contentEditable, this.emojiSize)
       caret.setEndPosition(this.$refs.contentEditable)
     },
-    // TODO-namak: figure out with pasting data to nodes
-    addContentTo (data) {
+    /**
+     *
+     * @param {String} data
+     */
+    addInside (data) {
+      const ref = this.$refs.contentEditable
+      this.removeLastBrTag()
+      debugger
+
+      const caretPosition = caret.getPosition(ref)
+
+      console.log(caretPosition)
     },
     /**
      * Replace double <br> tags to one <br>
