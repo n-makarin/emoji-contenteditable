@@ -8,7 +8,6 @@
       @mousedown="mousedown($event)"
       @mouseup="mouseup($event)"
     />
-    <!-- @click="click($event)" -->
 
     <float-position
       v-model="modalOpened"
