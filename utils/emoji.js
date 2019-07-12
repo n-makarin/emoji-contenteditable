@@ -123,6 +123,5 @@ function getImagesList (string) {
  * @returns {String}
  */
 function escapeHtml (data) {
-  const regexp = new RegExp('&nbsp;|<br>', 'g')
-  return data.replace(regexp, ' ')
+  return data.replace(/&nbsp;|<br>/g, ' ')
 }
