@@ -2,6 +2,32 @@ import twemoji from 'twemoji'
 
 export default {
   /**
+   *
+   */
+  addInsideChildNodes (ref, data, caretPosition, emojiSize) {
+    const childNodes = ref.childNodes
+    const splittedContent = this.getSplittedContent(data)
+    for (let i = 0; i < splittedContent.length; i++) {
+      // text
+      if (splittedContent[i].text) {
+        if (childNodes.length === 0) {
+          ref.append(splittedContent[i].text)
+          return null
+        }
+
+        const combinedText = this.getCombinedNodeText(childNodes, caretPosition, splittedContent[i].text)
+        childNodes[caretPosition.nodeIndex].data = combinedText
+      // emoji
+      } else if (splittedContent[i].img) {
+        // this.appendEmoji(splittedContent[i].img, ref, emojiSize)
+      }
+    }
+
+    debugger
+
+    console.log(caretPosition, childNodes, splittedContent)
+  },
+  /**
    * Fill referenced area with parsed content
    * @param {String} text
    * @param {Object} ref Html reference
@@ -105,6 +131,19 @@ export default {
    */
   getEmojiImageTag (emojiNative) {
     return twemoji.parse(emojiNative)
+  },
+  /**
+   * Returns text to change text node with it
+   * @param {Object} childNodes
+   * @param {Object} caretPosition
+   * @param {String} text
+   * @returns {String}
+   */
+  getCombinedNodeText (childNodes, caretPosition, text) {
+    const nodeData = childNodes[caretPosition.nodeIndex].data || ''
+    const beginngin = nodeData.slice(0, caretPosition.textIndex) || ''
+    const ending = nodeData.slice(caretPosition.textIndex, nodeData.length - 1) || ''
+    return beginngin + text + ending
   }
 }
 
