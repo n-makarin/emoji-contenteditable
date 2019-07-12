@@ -31,7 +31,7 @@ export default {
     }
     return {
       nodeIndex: getNodeIndex(editableDiv, sel.anchorNode.data),
-      key: caretPos
+      textIndex: caretPos
     }
   },
   /**
