@@ -72,14 +72,14 @@ export default {
     },
     paste (e) {
       const pasteData = (e.clipboardData || window.clipboardData).getData('text')
-      this.updateValue(e.type, pasteData)
       this.addInside(pasteData)
+      this.updateValue(e.type, pasteData)
       e.preventDefault()
     },
     drop (e) {
       const dropData = e.dataTransfer.getData('Text')
-      this.updateValue(e.type, dropData)
       this.appendContent(dropData)
+      this.updateValue(e.type, dropData)
       e.preventDefault(dropData)
     },
     /**
@@ -89,6 +89,10 @@ export default {
     updateValue (eventType, data) {
       this.event = eventType
       const ref = this.$refs.contentEditable
+      if (eventType === 'paste' || eventType === 'drop') {
+        this.$emit('input', emoji.parseToString(ref.innerHTML))
+        return null
+      }
       this.$emit('input', emoji.parseToString(ref.innerHTML) + (data || ''))
     },
     /**
