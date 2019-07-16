@@ -4,33 +4,14 @@ export default {
   /**
    *
    */
-  addInsideChildNodes (ref, data, caretPosition, emojiSize) {
+  insertToChildNode (ref, data, caretPosition, emojiSize) {
     const splittedContent = this.getSplittedContent(data)
     const targetNode = ref.childNodes[caretPosition.nodeIndex]
     const targetNodeName = targetNode ? targetNode.nodeName : null
 
-    // enumeration data to paste
-    for (let i = 0; i < splittedContent.length; i++) {
-      // text
-      if (splittedContent[i].text) {
-        if (ref.childNodes.length === 0) {
-          ref.append(splittedContent[i].text)
-          return null
-        }
-
-        this.insertText(ref, splittedContent[i].text, targetNodeName, caretPosition)
-
-      // emoji
-      } else if (splittedContent[i].img) {
-        if (ref.childNodes.length === 0) {
-          this.appendEmoji(splittedContent[i].img, ref, emojiSize)
-          return null
-        }
-        this.insertEmoji(ref, splittedContent[i].text, targetNodeName, caretPosition)
-      }
+    if (targetNodeName === '#text') {
+      this.insertToTextNode(ref, splittedContent, targetNodeName, caretPosition, emojiSize)
     }
-
-    console.log(caretPosition, splittedContent)
   },
   /**
    * Fill referenced area with parsed content
@@ -151,13 +132,35 @@ export default {
     return beginngin + text + ending
   },
   /**
- *
- */
-  insertText (ref, text, targetNodeName, caretPosition) {
-    if (targetNodeName === '#text') {
-      const combinedText = this.getCombinedNodeText(ref.childNodes, caretPosition, text)
-      ref.childNodes[caretPosition.nodeIndex].data = combinedText
+   *
+   */
+  insertToTextNode (ref, splittedContent, targetNodeName, caretPosition, emojiSize) {
+    // enumeration data to paste
+    for (let i = 0; i < splittedContent.length; i++) {
+      // text
+      if (splittedContent[i].text) {
+        if (ref.childNodes.length === 0) {
+          ref.append(splittedContent[i].text)
+          return null
+        }
+        const combinedText = this.getCombinedNodeText(ref.childNodes, caretPosition, splittedContent[i].text)
+        ref.childNodes[caretPosition.nodeIndex].data = combinedText
+
+      // emoji
+      } else if (splittedContent[i].img) {
+        if (ref.childNodes.length === 0) {
+          this.appendEmoji(splittedContent[i].img, ref, emojiSize)
+          return null
+        }
+        this.insertEmoji(ref, splittedContent[i].text, targetNodeName, caretPosition)
+      }
     }
+  },
+  /**
+   *
+   */
+  insertText (ref, text, targetNodeName, caretPosition) {
+
   },
   /**
    *
