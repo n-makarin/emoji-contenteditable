@@ -109,9 +109,9 @@ export default {
      * @param {String} data
      */
     addInside (data) {
-      this.removeLastBrTag()
       const ref = this.$refs.contentEditable
       const caretPosition = caret.getPosition(ref)
+      this.removeLastBrTag()
       emoji.insertToChildNode(ref, data, caretPosition, this.emojiSize)
     },
     /**
