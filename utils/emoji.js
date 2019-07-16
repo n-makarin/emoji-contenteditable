@@ -5,25 +5,32 @@ export default {
    *
    */
   addInsideChildNodes (ref, data, caretPosition, emojiSize) {
-    const childNodes = ref.childNodes
     const splittedContent = this.getSplittedContent(data)
+    const targetNode = ref.childNodes[caretPosition.nodeIndex]
+    const targetNodeName = targetNode ? targetNode.nodeName : null
+
+    // enumeration data to paste
     for (let i = 0; i < splittedContent.length; i++) {
       // text
       if (splittedContent[i].text) {
-        if (childNodes.length === 0) {
+        if (ref.childNodes.length === 0) {
           ref.append(splittedContent[i].text)
           return null
         }
 
-        const combinedText = this.getCombinedNodeText(childNodes, caretPosition, splittedContent[i].text)
-        childNodes[caretPosition.nodeIndex].data = combinedText
+        this.insertText(ref, splittedContent[i].text, targetNodeName, caretPosition)
+
       // emoji
       } else if (splittedContent[i].img) {
-        // this.appendEmoji(splittedContent[i].img, ref, emojiSize)
+        if (ref.childNodes.length === 0) {
+          this.appendEmoji(splittedContent[i].img, ref, emojiSize)
+          return null
+        }
+        this.insertEmoji(ref, splittedContent[i].text, targetNodeName, caretPosition)
       }
     }
 
-    console.log(caretPosition, childNodes, splittedContent)
+    console.log(caretPosition, splittedContent)
   },
   /**
    * Fill referenced area with parsed content
@@ -142,6 +149,21 @@ export default {
     const beginngin = nodeData.slice(0, caretPosition.textIndex) || ''
     const ending = nodeData.slice(caretPosition.textIndex, nodeData.length) || ''
     return beginngin + text + ending
+  },
+  /**
+ *
+ */
+  insertText (ref, text, targetNodeName, caretPosition) {
+    if (targetNodeName === '#text') {
+      const combinedText = this.getCombinedNodeText(ref.childNodes, caretPosition, text)
+      ref.childNodes[caretPosition.nodeIndex].data = combinedText
+    }
+  },
+  /**
+   *
+   */
+  insertEmoji (ref, text, targetNodeName, caretPosition) {
+
   }
 }
 
