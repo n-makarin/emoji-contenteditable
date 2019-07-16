@@ -9,9 +9,11 @@ export default {
     const targetNode = ref.childNodes[caretPosition.nodeIndex]
     const targetNodeName = targetNode ? targetNode.nodeName : null
 
-    if (targetNodeName === '#text') {
-      this.insertToTextNode(ref, splittedContent, targetNodeName, caretPosition, emojiSize)
-    }
+    const innerSplittedContent = this.getSplittedContent(ref.innerHTML)
+    const combinedSplittedContent = this.getCombinedSplittedContent(splittedContent, innerSplittedContent, caretPosition)
+    // ref.innerHTML = ''
+    // this.fillArea(text, ref, emojiSize)
+    console.log(innerSplittedContent, combinedSplittedContent, targetNodeName)
   },
   /**
    * Fill referenced area with parsed content
@@ -47,6 +49,8 @@ export default {
     for (let i = 0; i < imageList.length; i++) {
       data = data.replace(imageList[i], splitter + imgKey + splitter)
     }
+    data = data.replace(/<br>/g, splitter)
+    data = escapeHtml(data)
     data = data.split(splitter)
     data = data.filter(el => el !== '')
     for (let i = 0; i < data.length; i++) {
@@ -134,27 +138,8 @@ export default {
   /**
    *
    */
-  insertToTextNode (ref, splittedContent, targetNodeName, caretPosition, emojiSize) {
-    // enumeration data to paste
-    for (let i = 0; i < splittedContent.length; i++) {
-      // text
-      if (splittedContent[i].text) {
-        if (ref.childNodes.length === 0) {
-          ref.append(splittedContent[i].text)
-          return null
-        }
-        const combinedText = this.getCombinedNodeText(ref.childNodes, caretPosition, splittedContent[i].text)
-        ref.childNodes[caretPosition.nodeIndex].data = combinedText
+  getCombinedSplittedContent (splittedContent, innerSplittedContent, caretPosition) {
 
-      // emoji
-      } else if (splittedContent[i].img) {
-        if (ref.childNodes.length === 0) {
-          this.appendEmoji(splittedContent[i].img, ref, emojiSize)
-          return null
-        }
-        this.insertEmoji(ref, splittedContent[i].text, targetNodeName, caretPosition)
-      }
-    }
   },
   /**
    *
