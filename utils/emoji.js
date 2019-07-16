@@ -5,11 +5,12 @@ export default {
    *
    */
   insertToChildNode (ref, data, caretPosition, emojiSize) {
-    const splittedContent = this.getSplittedContent(data)
     const targetNode = ref.childNodes[caretPosition.nodeIndex]
     const targetNodeName = targetNode ? targetNode.nodeName : null
 
+    const splittedContent = this.getSplittedContent(data)
     const innerSplittedContent = this.getSplittedContent(ref.innerHTML)
+
     const combinedSplittedContent = this.getCombinedSplittedContent(splittedContent, innerSplittedContent, caretPosition)
     // ref.innerHTML = ''
     // this.fillArea(text, ref, emojiSize)
@@ -43,16 +44,24 @@ export default {
     data = twemoji.parse(data)
     const imageList = getImagesList(data)
     const imgKey = '[[img]]'
+    const brKey = '[[br]]'
     const splitter = '[[/]]'
     let imageCounter = 0
 
     for (let i = 0; i < imageList.length; i++) {
       data = data.replace(imageList[i], splitter + imgKey + splitter)
     }
-    data = data.replace(/<br>/g, splitter)
+    data = data.replace(/<br>/g, splitter + brKey + splitter)
     data = escapeHtml(data)
     data = data.split(splitter)
-    data = data.filter(el => el !== '')
+
+    data = data.filter(element => element !== '')
+
+    data.forEach((element, key) => {
+      if (element === brKey) {
+        data[key] = ''
+      }
+    })
     for (let i = 0; i < data.length; i++) {
       if (data[i] === imgKey) {
         data[i] = {
@@ -139,7 +148,12 @@ export default {
    *
    */
   getCombinedSplittedContent (splittedContent, innerSplittedContent, caretPosition) {
-
+    const beginning = innerSplittedContent.slice(0, caretPosition.nodeIndex)
+    const beginningContent = beginning[beginning.length - 1]
+    if (beginningContent.text) {
+      beginningContent.text = beginningContent.text.slice(0, caretPosition.textIndex)
+    }
+    console.log(beginning)
   },
   /**
    *
