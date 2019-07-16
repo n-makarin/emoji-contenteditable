@@ -6,14 +6,14 @@ export default {
    */
   getPosition (editableDiv) {
     let caretPos = 0
-    let sel = null
+    let selection = null
     let range = null
 
     if (window.getSelection) {
-      sel = window.getSelection()
+      selection = window.getSelection()
 
-      if (sel.rangeCount) {
-        range = sel.getRangeAt(0)
+      if (selection.rangeCount) {
+        range = selection.getRangeAt(0)
         if (range.commonAncestorContainer.parentNode === editableDiv) {
           caretPos = range.endOffset
         }
@@ -30,7 +30,7 @@ export default {
       }
     }
     return {
-      nodeIndex: getNodeIndex(editableDiv, sel.anchorNode.data),
+      nodeIndex: selection.anchorOffset,
       textIndex: caretPos
     }
   },
@@ -50,21 +50,4 @@ export default {
     sel.removeAllRanges()
     sel.addRange(range)
   }
-}
-
-/**
- * Returns selected node index
- * @param {Object} element Html reference
- * @param {String} selData Data of current node
- * @returns {Number}
- */
-function getNodeIndex (element, selData) {
-  const childNodes = element.childNodes
-  let index = 0
-  childNodes.forEach((element, key) => {
-    if (element.data === selData) {
-      index = key
-    }
-  })
-  return index
 }
