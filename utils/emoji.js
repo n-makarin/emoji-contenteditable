@@ -23,8 +23,6 @@ export default {
       }
     }
 
-    debugger
-
     console.log(caretPosition, childNodes, splittedContent)
   },
   /**
@@ -142,7 +140,7 @@ export default {
   getCombinedNodeText (childNodes, caretPosition, text) {
     const nodeData = childNodes[caretPosition.nodeIndex].data || ''
     const beginngin = nodeData.slice(0, caretPosition.textIndex) || ''
-    const ending = nodeData.slice(caretPosition.textIndex, nodeData.length - 1) || ''
+    const ending = nodeData.slice(caretPosition.textIndex, nodeData.length) || ''
     return beginngin + text + ending
   }
 }
