@@ -61,14 +61,7 @@ export default {
     data = data.replace(/<br>/g, splitter + brKey + splitter)
     data = escapeHtml(data)
     data = data.split(splitter)
-
     data = data.filter(element => element !== '')
-
-    // data.forEach((element, key) => {
-    //   if (element === brKey) {
-    //     data[key] = ''
-    //   }
-    // })
     for (let i = 0; i < data.length; i++) {
       if (data[i] === imgKey) {
         data[i] = {
@@ -184,18 +177,6 @@ export default {
     result = beginning.concat(insertingContent, ending)
     result = mergeTextElements(result)
     return result
-  },
-  /**
-   *
-   */
-  insertText (ref, text, targetNodeName, caretPosition) {
-
-  },
-  /**
-   *
-   */
-  insertEmoji (ref, text, targetNodeName, caretPosition) {
-
   }
 }
 
