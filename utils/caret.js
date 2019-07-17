@@ -29,9 +29,10 @@ export default {
         caretPos = tempRange.text.length
       }
     }
+    debugger
     return {
-      nodeIndex: selection.anchorOffset,
-      textIndex: caretPos
+      nodeIndex: getNodeIndex(selection),
+      textIndex: caretPos - 1
     }
   },
   /**
@@ -50,4 +51,28 @@ export default {
     sel.removeAllRanges()
     sel.addRange(range)
   }
+}
+
+/**
+ *
+ * @param {Object} selection
+ */
+function getNodeIndex (selection) {
+  const anchorNode = selection.anchorNode
+  const parentChildNodes = [...anchorNode.parentNode.childNodes]
+  const selectionNodeName = anchorNode.nodeName
+  const nextSibiling = anchorNode.nextElementSibling
+  const prevSibiling = anchorNode.previousElementSibling
+  let nodeIndex = 0
+
+  parentChildNodes.forEach((element, key) => {
+    if (
+      element.nodeName === selectionNodeName &&
+      element.nextElementSibling === nextSibiling &&
+      element.previousElementSibling === prevSibiling
+    ) {
+      nodeIndex = key
+    }
+  })
+  return nodeIndex
 }
