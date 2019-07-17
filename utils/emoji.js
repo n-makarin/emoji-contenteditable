@@ -2,13 +2,18 @@ import twemoji from 'twemoji'
 
 export default {
   /**
-   *
+   * Insert splitted content to splitted innerHTML content
+   * and fill area with it
+   * @param {Object} ref Html reference
+   * @param {String} data Data to insert
+   * @param {Object} caretPosition
+   * @param {Number} emojiSize
    */
   insertToChildNode (ref, data, caretPosition, emojiSize) {
-    const pastingContent = this.getSplittedContent(data)
     const innerHTMLContent = this.getSplittedContent(ref.innerHTML)
+    const insertingContent = this.getSplittedContent(data)
 
-    const combinedSplittedContent = this.getCombinedSplittedContent(innerHTMLContent, pastingContent, caretPosition)
+    const combinedSplittedContent = this.getCombinedSplittedContent(innerHTMLContent, insertingContent, caretPosition)
     ref.innerHTML = ''
     this.fillArea(combinedSplittedContent, ref, emojiSize)
   },
@@ -151,9 +156,13 @@ export default {
     return beginngin + text + ending
   },
   /**
-   *
+   * Combine content to fill area with it
+   * @param {Array} innerHTMLContent
+   * @param {Array} insertingContent
+   * @param {Object} caretPosition
+   * @returns {Array}
    */
-  getCombinedSplittedContent (innerHTMLContent, pastingContent, caretPosition) {
+  getCombinedSplittedContent (innerHTMLContent, insertingContent, caretPosition) {
     let result = []
     const beginning = innerHTMLContent.slice(0, caretPosition.nodeIndex + 1)
     const ending = innerHTMLContent.slice(caretPosition.nodeIndex, innerHTMLContent.length)
@@ -172,7 +181,7 @@ export default {
       ending.shift()
       ending.unshift({ text: endingText })
     }
-    result = beginning.concat(pastingContent, ending)
+    result = beginning.concat(insertingContent, ending)
     result = mergeTextElements(result)
     return result
   },
@@ -208,8 +217,9 @@ function escapeHtml (data) {
   return data.replace(/&nbsp;|<br>/g, ' ')
 }
 /**
- *
+ * Returns array of merged repeating text elements
  * @param {Array} array
+ * @returns {Array}
  */
 function mergeTextElements (array) {
   const result = []
