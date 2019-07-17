@@ -164,7 +164,7 @@ export default {
     const endingContent = ending[0]
 
     // text
-    if (beginningContent.text) {
+    if (beginningContent && beginningContent.text) {
       const beginningText = beginningContent.text.slice(0, caretPosition.textIndex)
       const endingText = endingContent.text.slice(caretPosition.textIndex, endingContent.text.length)
 
