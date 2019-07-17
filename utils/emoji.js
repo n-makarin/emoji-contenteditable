@@ -152,14 +152,23 @@ export default {
    *
    */
   getCombinedSplittedContent (innerHTMLContent, pastingContent, caretPosition) {
+    let result = []
     const beginning = innerHTMLContent.slice(0, caretPosition.nodeIndex)
+    const ending = innerHTMLContent.slice(caretPosition.nodeIndex, innerHTMLContent.length)
+
     const beginningContent = beginning[beginning.length - 1]
+    const endingContent = ending[0]
 
     // text
     if (beginningContent.text) {
       beginningContent.text = beginningContent.text.slice(0, caretPosition.textIndex)
+      endingContent.text = endingContent.text.slice(caretPosition.textIndex, endingContent.text.length - 1)
+
+      beginning[beginning.length - 1] = beginningContent
+      ending[0] = endingContent
     }
-    console.log(beginning)
+    result = beginning.concat(pastingContent, ending)
+    return result
   },
   /**
    *
