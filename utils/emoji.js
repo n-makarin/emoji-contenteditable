@@ -28,6 +28,8 @@ export default {
       // emoji
       } else if (splittedContent[i].img) {
         this.appendEmoji(splittedContent[i].img, ref, emojiSize)
+      } else if (splittedContent[i].br) {
+        ref.append(document.createElement('br'))
       }
     }
   },
@@ -57,17 +59,21 @@ export default {
 
     data = data.filter(element => element !== '')
 
-    data.forEach((element, key) => {
-      if (element === brKey) {
-        data[key] = ''
-      }
-    })
+    // data.forEach((element, key) => {
+    //   if (element === brKey) {
+    //     data[key] = ''
+    //   }
+    // })
     for (let i = 0; i < data.length; i++) {
       if (data[i] === imgKey) {
         data[i] = {
           img: imageList[imageCounter]
         }
         imageCounter++
+      } else if (data[i] === brKey) {
+        data[i] = {
+          br: true
+        }
       } else {
         data[i] = {
           text: data[i]
@@ -167,6 +173,7 @@ export default {
       ending.unshift({ text: endingText })
     }
     result = beginning.concat(pastingContent, ending)
+    result = mergeTextElements(result)
     return result
   },
   /**
@@ -199,4 +206,24 @@ function getImagesList (string) {
  */
 function escapeHtml (data) {
   return data.replace(/&nbsp;|<br>/g, ' ')
+}
+/**
+ *
+ * @param {Array} array
+ */
+function mergeTextElements (array) {
+  const result = []
+  for (let i = 0; i < array.length; i++) {
+    if (array[i].text) {
+      let combinedText = array[i].text
+      while (array[i + 1] && array[i + 1].text) {
+        combinedText = combinedText + array[i + 1].text
+        i++
+      }
+      result.push({ text: combinedText })
+    } else {
+      result.push(array[i])
+    }
+  }
+  return result
 }
