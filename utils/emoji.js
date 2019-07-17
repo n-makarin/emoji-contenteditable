@@ -8,13 +8,13 @@ export default {
     const targetNode = ref.childNodes[caretPosition.nodeIndex]
     const targetNodeName = targetNode ? targetNode.nodeName : null
 
-    const splittedContent = this.getSplittedContent(data)
-    const innerSplittedContent = this.getSplittedContent(ref.innerHTML)
+    const pastingContent = this.getSplittedContent(data)
+    const innerHTMLContent = this.getSplittedContent(ref.innerHTML)
 
-    const combinedSplittedContent = this.getCombinedSplittedContent(splittedContent, innerSplittedContent, caretPosition)
+    const combinedSplittedContent = this.getCombinedSplittedContent(innerHTMLContent, pastingContent, caretPosition)
     // ref.innerHTML = ''
     // this.fillArea(text, ref, emojiSize)
-    console.log(innerSplittedContent, combinedSplittedContent, targetNodeName)
+    console.log(combinedSplittedContent, targetNodeName)
   },
   /**
    * Fill referenced area with parsed content
@@ -151,9 +151,11 @@ export default {
   /**
    *
    */
-  getCombinedSplittedContent (splittedContent, innerSplittedContent, caretPosition) {
-    const beginning = innerSplittedContent.slice(0, caretPosition.nodeIndex)
+  getCombinedSplittedContent (innerHTMLContent, pastingContent, caretPosition) {
+    const beginning = innerHTMLContent.slice(0, caretPosition.nodeIndex)
     const beginningContent = beginning[beginning.length - 1]
+
+    // text
     if (beginningContent.text) {
       beginningContent.text = beginningContent.text.slice(0, caretPosition.textIndex)
     }
