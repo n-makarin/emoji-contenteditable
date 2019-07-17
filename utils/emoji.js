@@ -5,25 +5,21 @@ export default {
    *
    */
   insertToChildNode (ref, data, caretPosition, emojiSize) {
-    const targetNode = ref.childNodes[caretPosition.nodeIndex]
-    const targetNodeName = targetNode ? targetNode.nodeName : null
-
     const pastingContent = this.getSplittedContent(data)
     const innerHTMLContent = this.getSplittedContent(ref.innerHTML)
 
     const combinedSplittedContent = this.getCombinedSplittedContent(innerHTMLContent, pastingContent, caretPosition)
-    // ref.innerHTML = ''
-    // this.fillArea(text, ref, emojiSize)
-    console.log(combinedSplittedContent, targetNodeName)
+    ref.innerHTML = ''
+    this.fillArea(combinedSplittedContent, ref, emojiSize)
   },
   /**
    * Fill referenced area with parsed content
-   * @param {String} text
+   * @param {String|Array} content
    * @param {Object} ref Html reference
    * @param {Number} emojiSize
    */
-  fillArea (text, ref, emojiSize) {
-    const splittedContent = this.getSplittedContent(text)
+  fillArea (content, ref, emojiSize) {
+    const splittedContent = typeof content === 'string' ? this.getSplittedContent(content) : content
     for (let i = 0; i < splittedContent.length; i++) {
       // text
       if (splittedContent[i].text) {
@@ -153,7 +149,7 @@ export default {
    */
   getCombinedSplittedContent (innerHTMLContent, pastingContent, caretPosition) {
     let result = []
-    const beginning = innerHTMLContent.slice(0, caretPosition.nodeIndex)
+    const beginning = innerHTMLContent.slice(0, caretPosition.nodeIndex + 1)
     const ending = innerHTMLContent.slice(caretPosition.nodeIndex, innerHTMLContent.length)
 
     const beginningContent = beginning[beginning.length - 1]
@@ -161,11 +157,14 @@ export default {
 
     // text
     if (beginningContent.text) {
-      beginningContent.text = beginningContent.text.slice(0, caretPosition.textIndex)
-      endingContent.text = endingContent.text.slice(caretPosition.textIndex, endingContent.text.length - 1)
+      const beginningText = beginningContent.text.slice(0, caretPosition.textIndex)
+      const endingText = endingContent.text.slice(caretPosition.textIndex, endingContent.text.length)
 
-      beginning[beginning.length - 1] = beginningContent
-      ending[0] = endingContent
+      beginning.pop()
+      beginning.push({ text: beginningText })
+
+      ending.shift()
+      ending.unshift({ text: endingText })
     }
     result = beginning.concat(pastingContent, ending)
     return result
