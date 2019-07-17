@@ -41,8 +41,12 @@ export default {
    * @returns {Array}
    */
   getSplittedContent (data) {
-    data = twemoji.parse(data)
-    const imageList = getImagesList(data)
+    let imageList = getImagesList(data)
+    // if it already has imageList we don't need to parse data with twemoji
+    if (imageList.length === 0) {
+      data = twemoji.parse(data)
+      imageList = getImagesList(data)
+    }
     const imgKey = '[[img]]'
     const brKey = '[[br]]'
     const splitter = '[[/]]'
