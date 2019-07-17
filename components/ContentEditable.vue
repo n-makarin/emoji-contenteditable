@@ -61,7 +61,7 @@ export default {
       this.updateValue('selectEmoji', newValue)
       this.removeLastBrTag()
       const emojiImage = emoji.getEmojiImageTag(newValue)
-      emoji.appendEmoji(emojiImage, this.$refs.contentEditable, this.emojiSize)
+      this.addInside(emojiImage)
       this.$emit('clearEmoji')
     }
   },
@@ -78,7 +78,7 @@ export default {
     },
     drop (e) {
       const dropData = e.dataTransfer.getData('Text')
-      this.appendContent(dropData)
+      this.addInside(dropData)
       this.updateValue(e.type, dropData)
       e.preventDefault(dropData)
     },
