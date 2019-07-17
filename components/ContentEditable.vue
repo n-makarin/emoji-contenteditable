@@ -105,7 +105,7 @@ export default {
       caret.setEndPosition(this.$refs.contentEditable)
     },
     /**
-     *
+     * Add inserting data inside existing node
      * @param {String} data
      */
     addInside (data) {
