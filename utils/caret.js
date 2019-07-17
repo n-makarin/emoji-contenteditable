@@ -29,10 +29,9 @@ export default {
         caretPos = tempRange.text.length
       }
     }
-    debugger
     return {
       nodeIndex: getNodeIndex(selection),
-      textIndex: caretPos - 1
+      textIndex: caretPos
     }
   },
   /**
