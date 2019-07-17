@@ -53,11 +53,15 @@ export default {
 }
 
 /**
- *
+ * Returns contentEditable node index of caret position
  * @param {Object} selection
+ * @returns {Number}
  */
 function getNodeIndex (selection) {
   const anchorNode = selection.anchorNode
+  if (anchorNode.parentNode.className.includes('no-flex-wrapper')) {
+    return selection.anchorOffset
+  }
   const parentChildNodes = [...anchorNode.parentNode.childNodes]
   const selectionNodeName = anchorNode.nodeName
   const nextSibiling = anchorNode.nextElementSibling
