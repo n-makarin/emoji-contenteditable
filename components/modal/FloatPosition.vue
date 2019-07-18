@@ -1,5 +1,10 @@
 <template>
-  <div ref="container" :class="classObject">
+  <div
+    ref="container"
+    :class="classObject"
+    @mouseover="$emit('mouseover')"
+    @mouseleave="$emit('mouseleave')"
+  >
     <slot />
   </div>
 </template>
