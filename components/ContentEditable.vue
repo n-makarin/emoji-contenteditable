@@ -40,7 +40,10 @@ export default {
   data () {
     return {
       event: null,
-      caretPosition: null
+      caretPosition: {
+        nodeIndex: 0,
+        textIndex: 0
+      }
     }
   },
   computed: {
@@ -116,8 +119,7 @@ export default {
      */
     addInside (data) {
       const ref = this.$refs.contentEditable
-      const caretPosition = caret.getPosition(ref)
-      emoji.insertToChildNode(ref, data, caretPosition, this.emojiSize)
+      emoji.insertToChildNode(ref, data, this.caretPosition, this.emojiSize)
       this.removeLastBrTag()
     },
     /**
