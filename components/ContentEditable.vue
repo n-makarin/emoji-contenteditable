@@ -39,7 +39,8 @@ export default {
   },
   data () {
     return {
-      event: null
+      event: null,
+      caretPosition: null
     }
   },
   computed: {
@@ -48,7 +49,9 @@ export default {
         ...this.$listeners,
         input: this.input,
         paste: this.paste,
-        drop: this.drop
+        drop: this.drop,
+        keyup: this.setCaretPosition,
+        click: this.setCaretPosition
       }
     }
   },
@@ -62,6 +65,9 @@ export default {
       this.addInside(emojiImage)
       this.updateValue('selectEmoji', newValue)
       this.$emit('clearEmoji')
+    },
+    caretPosition (newValue, oldValue) {
+      console.log(newValue.nodeIndex, newValue.textIndex)
     }
   },
   methods: {
@@ -143,6 +149,12 @@ export default {
         }
       }
       return combinedNodes
+    },
+    /**
+     * Set current caret position
+     */
+    setCaretPosition () {
+      this.caretPosition = caret.getPosition(this.$refs.contentEditable)
     }
   }
 }
