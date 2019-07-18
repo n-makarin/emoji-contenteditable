@@ -1,12 +1,11 @@
 <template>
-  <div
-    v-on-clickaway="closeModal"
-    class="emoji-picker"
-  >
+  <div class="emoji-picker">
     <span
+      ref="btn"
       class="emoji-picker__btn icon icon_smile"
-      @mousedown="mousedown($event)"
-      @mouseup="mouseup($event)"
+      @mouseover="btnMouseover()"
+      @mouseleave="btnMouseleave()"
+      @mousedown="btnMousedown()"
     />
 
     <float-position
@@ -14,6 +13,8 @@
       :position="modalPosition"
       :target-offset="modalTargetOffset"
       :no-ssr-loaded="loaded"
+      @mouseover="modalMouseover()"
+      @mouseleave="modalMouseleave()"
     >
       <no-ssr placeholder="Loading...">
         <no-ssr-loaded @loaded="loaded = true" />
@@ -27,7 +28,6 @@
 /**
  * @component @/components/EmojiPicker
  */
-import { mixin as clickaway } from 'vue-clickaway'
 import { Picker } from 'emoji-mart-vue'
 import FloatPosition from '@/components/modal/FloatPosition'
 import NoSsrLoaded from '@/components/NoSsrLoaded'
@@ -39,7 +39,6 @@ export default {
     NoSsrLoaded,
     Picker
   },
-  mixins: [ clickaway ],
   props: {
     // emoji
     value: {
@@ -60,15 +59,32 @@ export default {
   data () {
     return {
       modalOpened: false,
-      loaded: false
+      loaded: false,
+      modalHovered: false
     }
   },
   methods: {
+    btnMouseover () {
+      this.modalOpened = true
+    },
+    btnMouseleave () {
+      const delay = 200 + (this.modalTargetOffset * 1.5)
+      setTimeout(function () {
+        if (!this.modalHovered) { this.modalOpened = false }
+      }.bind(this), delay)
+    },
+    btnMousedown () {
+      this.toggleModal()
+    },
+    modalMouseover () {
+      this.modalHovered = true
+    },
+    modalMouseleave () {
+      this.modalHovered = false
+      this.modalOpened = false
+    },
     toggleModal () {
       this.modalOpened = !this.modalOpened
-    },
-    closeModal () {
-      this.modalOpened = false
     },
     /**
      * Add selected emoji to the text and close picker modal
@@ -77,13 +93,6 @@ export default {
     select (emoji) {
       this.$emit('input', emoji.native)
       this.toggleModal()
-    },
-    mousedown (e) {
-      this.toggleModal()
-      e.target.classList.add('on-mousedown')
-    },
-    mouseup (e) {
-      e.target.classList.remove('on-mousedown')
     }
   }
 }
