@@ -161,7 +161,7 @@ export default {
     }
     let result = []
     const beginning = innerHTMLContent.slice(0, caretPosition.nodeIndex + 1)
-    const ending = innerHTMLContent.slice(caretPosition.nodeIndex, innerHTMLContent.length)
+    const ending = innerHTMLContent.slice(caretPosition.nodeIndex + 1, innerHTMLContent.length)
 
     const beginningContent = beginning[beginning.length - 1]
     const endingContent = ending[0] || { text: '' }
@@ -177,6 +177,9 @@ export default {
       ending.shift()
       ending.unshift({ text: endingText })
     }
+    // else if (beginningContent && beginningContent.br && endingContent.br) {
+    //   beginning.pop()
+    // }
     result = beginning.concat(insertingContent, ending)
     result = mergeTextElements(result)
     return result
