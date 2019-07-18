@@ -59,8 +59,13 @@ export default {
  */
 function getNodeIndex (selection) {
   const anchorNode = selection.anchorNode
-  if (anchorNode.parentNode.className.includes('no-flex-wrapper')) {
-    return selection.anchorOffset
+  const anchorClassName = anchorNode.parentNode.className
+  if (anchorClassName.includes('no-flex-wrapper')) {
+    return selection.anchorOffset - 1
+  }
+  // TODO-nmak: temporary for events without selection on content-editable
+  if (anchorClassName.includes('emoji-mart-emoji')) {
+    return null
   }
   const parentChildNodes = [...anchorNode.parentNode.childNodes]
   const selectionNodeName = anchorNode.nodeName
