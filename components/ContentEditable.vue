@@ -58,10 +58,9 @@ export default {
      */
     emoji (newValue, oldValue) {
       if (newValue.length === 0) { return null }
-      this.updateValue('selectEmoji', newValue)
-      this.removeLastBrTag()
       const emojiImage = emoji.getEmojiImageTag(newValue)
       this.addInside(emojiImage)
+      this.updateValue('selectEmoji', newValue)
       this.$emit('clearEmoji')
     }
   },
@@ -89,7 +88,8 @@ export default {
     updateValue (eventType, data) {
       this.event = eventType
       const ref = this.$refs.contentEditable
-      if (eventType === 'paste' || eventType === 'drop') {
+      const addInsideEventTeypes = ['paste', 'drop', 'selectEmoji']
+      if (addInsideEventTeypes.includes(eventType)) {
         this.$emit('input', emoji.parseToString(ref.innerHTML))
         return null
       }
