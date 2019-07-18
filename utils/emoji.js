@@ -156,9 +156,12 @@ export default {
    * @returns {Array}
    */
   getCombinedSplittedContent (innerHTMLContent, insertingContent, caretPosition) {
+    if (caretPosition.nodeIndex === 0 && caretPosition.textIndex === 0) {
+      return innerHTMLContent.concat(insertingContent)
+    }
     let result = []
     const beginning = innerHTMLContent.slice(0, caretPosition.nodeIndex + 1)
-    const ending = innerHTMLContent.slice(caretPosition.nodeIndex, innerHTMLContent.length)
+    let ending = innerHTMLContent.slice(caretPosition.nodeIndex, innerHTMLContent.length)
 
     const beginningContent = beginning[beginning.length - 1]
     const endingContent = ending[0]
@@ -173,6 +176,8 @@ export default {
 
       ending.shift()
       ending.unshift({ text: endingText })
+    } else {
+      ending = []
     }
     result = beginning.concat(insertingContent, ending)
     result = mergeTextElements(result)
