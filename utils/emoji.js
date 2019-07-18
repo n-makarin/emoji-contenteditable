@@ -150,6 +150,13 @@ export default {
   },
   /**
    * Combine content to fill area with it
+   * Retunrs beginning + insertingContent + ending
+   * 1. If beginning[last element].text && ending[firs element].text =>
+   *    split string and paste insertingContent between
+   * 2. beginning[last element][br || img] && ending[firs element][br || img] =>
+   *    just concat elements with insertingContent between
+   * 3. beginning[last element].text.length >= caretPosition.textIndex =>
+   *    ending[firs element] = beginning[last element + 1]
    * @param {Array} innerHTMLContent
    * @param {Array} insertingContent
    * @param {Object} caretPosition
@@ -161,25 +168,20 @@ export default {
     }
     let result = []
     const beginning = innerHTMLContent.slice(0, caretPosition.nodeIndex + 1)
-    const ending = innerHTMLContent.slice(caretPosition.nodeIndex + 1, innerHTMLContent.length)
-
-    const beginningContent = beginning[beginning.length - 1]
+    const beginningContent = beginning[beginning.length - 1] || []
+    const endingNodeIndex = getEndingNodeIndex(beginningContent, caretPosition)
+    const ending = innerHTMLContent.slice(endingNodeIndex, innerHTMLContent.length)
     const endingContent = ending[0] || { text: '' }
 
     // text
-    if (beginningContent && beginningContent.text) {
+    if (beginningContent.text && endingContent.text) {
       const beginningText = beginningContent.text.slice(0, caretPosition.textIndex)
       const endingText = endingContent.text.slice(caretPosition.textIndex, endingContent.text.length)
-
       beginning.pop()
       beginning.push({ text: beginningText })
-
       ending.shift()
       ending.unshift({ text: endingText })
     }
-    // else if (beginningContent && beginningContent.br && endingContent.br) {
-    //   beginning.pop()
-    // }
     result = beginning.concat(insertingContent, ending)
     result = mergeTextElements(result)
     return result
@@ -223,4 +225,19 @@ function mergeTextElements (array) {
     }
   }
   return result
+}
+/**
+ * Ending node index depends on beginning element type and caret position inside it
+ * @param {Array} beginningContent
+ * @param {Object} caretPosition
+ * @returns {Number}
+ */
+function getEndingNodeIndex (beginningContent, caretPosition) {
+  let endingNodeIndex = 0
+  if (beginningContent.text && beginningContent.text.length >= caretPosition.textIndex) {
+    endingNodeIndex = caretPosition.nodeIndex
+  } else {
+    endingNodeIndex = caretPosition.nodeIndex + 1
+  }
+  return endingNodeIndex
 }
