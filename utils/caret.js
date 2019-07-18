@@ -65,10 +65,10 @@ function getNodeIndex (selection) {
     return index > 0 ? index : 0
   }
   // TODO-nmak: temporary for events without selection on content-editable
+  // allows to past emoji in the end of content from emoji-picker
   if (
     !anchorClassName.includes('no-flex-wrapper') &&
-    !anchorClassName.includes('content-editable') &&
-    anchorClassName.length > 0
+    !anchorClassName.includes('content-editable')
   ) {
     return null
   }
