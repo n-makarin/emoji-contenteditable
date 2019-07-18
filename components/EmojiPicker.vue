@@ -5,7 +5,6 @@
       class="emoji-picker__btn icon icon_smile"
       @mouseover="btnMouseover()"
       @mouseleave="btnMouseleave()"
-      @mousedown="btnMousedown()"
     />
 
     <float-position
@@ -63,6 +62,16 @@ export default {
       modalHovered: false
     }
   },
+  watch: {
+    modalOpened (newValue, oldValue) {
+      const activeClass = 'emoji-picker__btn_active'
+      if (newValue) {
+        this.$refs.btn.classList.add(activeClass)
+      } else {
+        this.$refs.btn.classList.remove(activeClass)
+      }
+    }
+  },
   methods: {
     btnMouseover () {
       this.modalOpened = true
@@ -72,9 +81,6 @@ export default {
       setTimeout(function () {
         if (!this.modalHovered) { this.modalOpened = false }
       }.bind(this), delay)
-    },
-    btnMousedown () {
-      this.toggleModal()
     },
     modalMouseover () {
       this.modalHovered = true
@@ -119,6 +125,10 @@ export default {
   &__btn {
     cursor pointer
     vertical-align top
+    &_active {
+      filter brightness(0.7)
+      transition filter .05s easy-in
+    }
   }
 }
 
