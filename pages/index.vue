@@ -100,6 +100,9 @@ h1 {
   }
 
   .contentEditable {
+    .content-editable {
+      max-width 400px
+    }
     .emoji-picker {
       margin 0 5px
     }
