@@ -1,6 +1,7 @@
 import twemoji from 'twemoji'
 
 export default {
+  // TODO: desctiption
   /**
    * Insert splitted content to splitted innerHTML content
    * and fill area with it
@@ -8,14 +9,17 @@ export default {
    * @param {String} data Data to insert
    * @param {Object} caretPosition
    * @param {Number} emojiSize
+   * @returns
    */
   insertToChildNode (ref, data, caretPosition, emojiSize) {
     const innerHTMLContent = this.getSplittedContent(ref.innerHTML)
     const insertingContent = this.getSplittedContent(data)
+    const caretPositionStep = getCaretPositionStep(insertingContent)
 
     const combinedSplittedContent = this.getCombinedSplittedContent(innerHTMLContent, insertingContent, caretPosition)
     ref.innerHTML = ''
     this.fillArea(combinedSplittedContent, ref, emojiSize)
+    return caretPositionStep
   },
   /**
    * Fill referenced area with parsed content
@@ -240,4 +244,23 @@ function getEndingNodeIndex (beginningContent, caretPosition) {
     endingNodeIndex = caretPosition.nodeIndex + 1
   }
   return endingNodeIndex
+}
+/**
+ *
+ */
+// TODO: just set caret position, maan
+function getCaretPositionStep (data) {
+  let textCount = 0
+  let nodeCount = 0
+  data.forEach((element) => {
+    debugger
+    // if (element.text) { textCount = textCount + element.text.length }
+    if (element.text) { nodeCount++; textCount = element.text.length }
+    if (element.img) { nodeCount++; textCount = 0 }
+    if (element.br) { nodeCount++; textCount = 0 }
+  })
+  return {
+    nodeCount: nodeCount - 1,
+    textCount
+  }
 }
