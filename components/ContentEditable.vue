@@ -68,9 +68,6 @@ export default {
       this.addInside(emojiImage)
       this.updateValue('selectEmoji', newValue)
       this.$emit('clearEmoji')
-    },
-    caretPosition (newValue, oldValue) {
-      console.log(newValue.nodeIndex, newValue.textIndex)
     }
   },
   methods: {
