@@ -119,8 +119,13 @@ export default {
      */
     addInside (data) {
       const ref = this.$refs.contentEditable
-      emoji.insertToChildNode(ref, data, this.caretPosition, this.emojiSize)
+      const caretPositionStep = emoji.insertToChildNode(ref, data, this.caretPosition, this.emojiSize)
       this.removeLastBrTag()
+      this.caretPosition = {
+        nodeIndex: this.caretPosition.nodeIndex + caretPositionStep.nodeCount,
+        textIndex: this.caretPosition.textIndex + caretPositionStep.textCount
+      }
+      caret.setPosition(ref, this.caretPosition)
     },
     /**
      * Replace double <br> tags to one <br>
