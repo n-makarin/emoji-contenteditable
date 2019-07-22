@@ -35,7 +35,7 @@ export default {
     }
   },
   /**
-   * Set caret end position in editable area
+   * Set caret end position in contentEditable
    * @param {Object} el Element target
    */
   setEndPosition (el) {
@@ -47,6 +47,19 @@ export default {
     range.selectNodeContents(el)
     range.collapse(false)
     const sel = window.getSelection()
+    sel.removeAllRanges()
+    sel.addRange(range)
+  },
+  /**
+   * Set caret position in contentEditable
+   * @param {Object} el Html reference
+   * @param {Object} caretPosition
+   */
+  setPosition (el, caretPosition) {
+    const range = document.createRange()
+    const sel = window.getSelection()
+    range.setStart(el.childNodes[caretPosition.nodeIndex], caretPosition.textIndex)
+    range.collapse(true)
     sel.removeAllRanges()
     sel.addRange(range)
   }
