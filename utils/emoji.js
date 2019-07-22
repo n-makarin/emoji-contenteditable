@@ -1,7 +1,6 @@
 import twemoji from 'twemoji'
 
 export default {
-  // TODO: desctiption
   /**
    * Insert splitted content to splitted innerHTML content
    * and fill area with it
@@ -9,16 +8,16 @@ export default {
    * @param {String} data Data to insert
    * @param {Object} caretPosition
    * @param {Number} emojiSize
-   * @returns
+   * @returns {Object} caret position to set
    */
   insertToChildNode (ref, data, caretPosition, emojiSize) {
     const innerHTMLContent = this.getSplittedContent(ref.innerHTML)
     const insertingContent = this.getSplittedContent(data)
-    const caretPositionStep = getCaretPositionStep(insertingContent)
-
     const combinedSplittedContent = this.getCombinedSplittedContent(innerHTMLContent, insertingContent, caretPosition)
     ref.innerHTML = ''
     this.fillArea(combinedSplittedContent, ref, emojiSize)
+
+    const caretPositionStep = getCaretPositionStep(innerHTMLContent, combinedSplittedContent, insertingContent)
     return caretPositionStep
   },
   /**
@@ -246,21 +245,20 @@ function getEndingNodeIndex (beginningContent, caretPosition) {
   return endingNodeIndex
 }
 /**
- *
+ * Returns step from prev. caret position
+ * @param {Array} insertingContent
+ * @returns {Object}
  */
-// TODO: just set caret position, maan
-function getCaretPositionStep (data) {
+function getCaretPositionStep (innerHTMLContent, combinedSplittedContent, insertingContent) {
+  let nodesDiff = 0
   let textCount = 0
-  let nodeCount = 0
-  data.forEach((element) => {
-    debugger
-    // if (element.text) { textCount = textCount + element.text.length }
-    if (element.text) { nodeCount++; textCount = element.text.length }
-    if (element.img) { nodeCount++; textCount = 0 }
-    if (element.br) { nodeCount++; textCount = 0 }
+  nodesDiff = combinedSplittedContent.length - innerHTMLContent.length
+  insertingContent.forEach((element) => {
+    if (element.text) { textCount = element.text.length }
   })
+  nodesDiff = nodesDiff - 1 > 0 ? nodesDiff - 1 : 0
   return {
-    nodeCount: nodeCount - 1,
+    nodeCount: nodesDiff,
     textCount
   }
 }
