@@ -86,14 +86,6 @@ function getNodeIndex (selection) {
     const index = selection.anchorOffset - 1
     return index > 0 ? index : 0
   }
-  // TODO-nmak: temporary for events without selection on content-editable
-  // allows to past emoji in the end of content from emoji-picker
-  if (
-    !anchorClassName.includes('no-flex-wrapper') &&
-    !anchorClassName.includes('content-editable')
-  ) {
-    return null
-  }
   const parentChildNodes = [...anchorNode.parentNode.childNodes]
   const selectionNodeName = anchorNode.nodeName
   const nextSibiling = anchorNode.nextElementSibling
