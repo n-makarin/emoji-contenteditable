@@ -66,7 +66,11 @@ export default {
 
     const range = document.createRange()
     const sel = window.getSelection()
-    range.setStart(el.childNodes[nodeIndex], textIndex)
+    try {
+      range.setStart(el.childNodes[nodeIndex], textIndex)
+    } catch (err) {
+      console.error(err)
+    }
     range.collapse(true)
     sel.removeAllRanges()
     sel.addRange(range)
