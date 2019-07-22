@@ -56,9 +56,17 @@ export default {
    * @param {Object} caretPosition
    */
   setPosition (el, caretPosition) {
+    let nodeIndex = caretPosition.nodeIndex
+    let textIndex = caretPosition.textIndex
+    const nodeList = [...el.childNodes]
+    if (nodeList[nodeIndex].nodeName !== '#text') {
+      textIndex = 0
+      nodeIndex = el.childNodes[nodeIndex + 1] ? nodeIndex + 1 : nodeIndex
+    }
+
     const range = document.createRange()
     const sel = window.getSelection()
-    range.setStart(el.childNodes[caretPosition.nodeIndex], caretPosition.textIndex)
+    range.setStart(el.childNodes[nodeIndex], textIndex)
     range.collapse(true)
     sel.removeAllRanges()
     sel.addRange(range)
