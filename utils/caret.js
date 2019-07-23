@@ -59,7 +59,7 @@ export default {
     let nodeIndex = caretPosition.nodeIndex
     let textIndex = 0
     const nodeList = [...el.childNodes]
-    if (nodeList[nodeIndex].nodeName === '#text') {
+    if (nodeList[nodeIndex].nodeName === '#text' && nodeList[nodeIndex].data) {
       textIndex = caretPosition.textIndex
     } else {
       textIndex = 0
