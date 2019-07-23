@@ -57,11 +57,15 @@ export default {
    */
   setPosition (el, caretPosition) {
     let nodeIndex = caretPosition.nodeIndex
-    let textIndex = caretPosition.textIndex
+    let textIndex = 0
     const nodeList = [...el.childNodes]
-    if (nodeList[nodeIndex].nodeName !== '#text') {
+    if (nodeList[nodeIndex].nodeName === '#text') {
+      textIndex = caretPosition.textIndex
+    } else {
       textIndex = 0
-      nodeIndex = el.childNodes[nodeIndex + 1] ? nodeIndex + 1 : nodeIndex
+      if (nodeList[nodeIndex].nodeName === 'IMG' || el.childNodes[nodeIndex + 1]) {
+        nodeIndex = nodeIndex + 1
+      }
     }
 
     const range = document.createRange()
