@@ -116,8 +116,8 @@ export default {
      */
     addInside (data) {
       const ref = this.$refs.contentEditable
-      const caretPositionStep = emoji.insertToChildNode(ref, data, this.caretPosition, this.emojiSize)
       this.removeLastBrTag()
+      const caretPositionStep = emoji.insertToChildNode(ref, data, this.caretPosition, this.emojiSize)
       this.caretPosition = {
         nodeIndex: this.caretPosition.nodeIndex + caretPositionStep.nodeCount,
         textIndex: this.caretPosition.textIndex + caretPositionStep.textCount
