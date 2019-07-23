@@ -270,15 +270,15 @@ function getCaretPositionStep (innerHTMLContent, combinedSplittedContent, insert
  * @param {Array} array Combined splitted content
  * @returns {Array}
  */
-function addEndTextElement (array) {
-  let lastElement = array[array.length - 1]
-  if (lastElement.hasOwnProperty('text') && lastElement.text.length === 0) {
-    array.pop()
-    lastElement = array[array.length - 1]
-  }
-  const isEmptyTextElement = lastElement.hasOwnProperty('text') && lastElement.text.length === 0
-  if (lastElement.img || isEmptyTextElement || lastElement.br) {
-    array.push({ text: true })
+function addEndTextElement (array, caretPosition) {
+  const targetIndex = array[caretPosition.nodeIndex + 1] ? caretPosition.nodeIndex + 1 : caretPosition.nodeIndex
+  const tergetElement = array[targetIndex]
+  const isEmptyTextElement = tergetElement.hasOwnProperty('text') && tergetElement.text.length === 0
+  if (tergetElement.img || isEmptyTextElement || tergetElement.br) {
+    const beginning = array.slice(0, targetIndex + 1)
+    const ending = array.slice(targetIndex + 1, array.length)
+    beginning.push({ text: true })
+    array = beginning.concat(ending)
   }
   return array
 }

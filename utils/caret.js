@@ -73,7 +73,7 @@ export default {
     try {
       range.setStart(el.childNodes[nodeIndex], textIndex)
     } catch (err) {
-      console.error(err)
+      console.log(err)
     }
     range.collapse(true)
     sel.removeAllRanges()
