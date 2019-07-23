@@ -31,7 +31,8 @@ export default {
     for (let i = 0; i < splittedContent.length; i++) {
       // text
       if (splittedContent[i].text) {
-        ref.append(splittedContent[i].text)
+        // boolean value is need for setting carret position after emoji
+        ref.append(typeof splittedContent[i].text === 'boolean' ? '' : splittedContent[i].text)
 
       // emoji
       } else if (splittedContent[i].img) {
@@ -187,6 +188,7 @@ export default {
     }
     result = beginning.concat(insertingContent, ending)
     result = mergeTextElements(result)
+    result = addEndTextElement(result, caretPosition)
     return result
   }
 }
@@ -261,4 +263,22 @@ function getCaretPositionStep (innerHTMLContent, combinedSplittedContent, insert
     nodeCount: nodesDiff,
     textCount
   }
+}
+/**
+ * Add text element to the end of array
+ * to allow set caret position after img and br elements
+ * @param {Array} array Combined splitted content
+ * @returns {Array}
+ */
+function addEndTextElement (array) {
+  let lastElement = array[array.length - 1]
+  if (lastElement.hasOwnProperty('text') && lastElement.text.length === 0) {
+    array.pop()
+    lastElement = array[array.length - 1]
+  }
+  const isEmptyTextElement = lastElement.hasOwnProperty('text') && lastElement.text.length === 0
+  if (lastElement.img || isEmptyTextElement || lastElement.br) {
+    array.push({ text: true })
+  }
+  return array
 }
