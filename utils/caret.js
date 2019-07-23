@@ -88,7 +88,7 @@ export default {
  */
 function getNodeIndex (selection) {
   const anchorNode = selection.anchorNode
-  if (!anchorNode) { return null }
+  if (!anchorNode || !anchorNode.parentNode) { return null }
   const anchorClassName = anchorNode.parentNode.className
   if (anchorClassName.includes('no-flex-wrapper')) {
     const index = selection.anchorOffset - 1
