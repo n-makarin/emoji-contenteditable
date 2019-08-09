@@ -9,24 +9,13 @@ export default {
     let selection = null
     let range = null
 
-    if (window.getSelection) {
-      selection = window.getSelection()
+    if (!window.getSelection) { return null }
+    selection = window.getSelection()
 
-      if (selection.rangeCount) {
-        range = selection.getRangeAt(0)
-        if (range.commonAncestorContainer.parentNode === editableDiv) {
-          caretPos = range.endOffset
-        }
-      }
-    } else if (document.selection && document.selection.createRange) {
-      range = document.selection.createRange()
-      if (range.parentElement() === editableDiv) {
-        const tempEl = document.createElement('span')
-        editableDiv.insertBefore(tempEl, editableDiv.firstChild)
-        const tempRange = range.duplicate()
-        tempRange.moveToElementText(tempEl)
-        tempRange.setEndPoint('EndToEnd', range)
-        caretPos = tempRange.text.length
+    if (selection.rangeCount) {
+      range = selection.getRangeAt(0)
+      if (range.commonAncestorContainer.parentNode === editableDiv) {
+        caretPos = range.endOffset
       }
     }
     return {
@@ -94,7 +83,13 @@ function getNodeIndex (selection) {
     const index = selection.anchorOffset - 1
     return index > 0 ? index : 0
   }
-  const parentChildNodes = [...anchorNode.parentNode.childNodes]
+  let parentChildNodes = [...anchorNode.parentNode.childNodes]
+  // filter child nodes
+  parentChildNodes = parentChildNodes.filter((element) => {
+    if (element.nodeName === '#text' && !element.data) { return false } else {
+      return true
+    }
+  })
   const selectionNodeName = anchorNode.nodeName
   const nextSibiling = anchorNode.nextElementSibling
   const prevSibiling = anchorNode.previousElementSibling
