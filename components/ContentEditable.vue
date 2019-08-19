@@ -11,9 +11,6 @@
 </template>
 
 <script>
-/**
- * @component @/components/ContentEditable
- */
 import emoji from '@/utils/emoji'
 import caret from '@/utils/caret'
 
@@ -180,6 +177,7 @@ export default {
     },
     /**
      * Set current caret position
+     * @returns {any}
      */
     setCaretPosition () {
       this.caretPosition = caret.getPosition(this.$refs.contentEditable)
