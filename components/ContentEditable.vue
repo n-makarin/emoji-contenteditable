@@ -24,10 +24,12 @@ export default {
       type: String,
       default: ''
     },
+    // emoji to pasting in unicode format 👩‍💻
     emoji: {
       type: String,
       default: () => null
     },
+    // in 'px'
     emojiSize: {
       type: Number,
       default: 18
@@ -39,7 +41,29 @@ export default {
   },
   data () {
     return {
-      event: null,
+      /**
+       * Content is separated to child nodes, like:
+       * "some text" - text node - nodeIndex[0]
+       * "<br>" - one else node - nodeIndex[1]
+       * "<img>" - else node etc.  - nodeIndex[2 ...]
+       *
+       * Text nodes has caret position inside them, like:
+       * "som<caret position>e text" - textIndex[2]
+       * (caret is appending after specified character)
+       *
+       * The result of this content is:
+       * "
+       * some text
+       * <br>
+       * <img ... />
+       * some el<caret position>se text
+       * "
+       * caretPosition: {
+       *  nodeIndex: 3,
+       *  textIndex: 6
+       * }
+       *
+       */
       caretPosition: {
         nodeIndex: 0,
         textIndex: 0
@@ -114,7 +138,6 @@ export default {
      * @param {String} eventType
      */
     updateValue (eventType, data) {
-      this.event = eventType
       const ref = this.$refs.contentEditable
       const addInsideEventTypes = ['paste', 'drop', 'selectEmoji']
       if (addInsideEventTypes.includes(eventType)) {
