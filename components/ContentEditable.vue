@@ -179,25 +179,6 @@ export default {
       }
     },
     /**
-     * Combine child nodes and return string with it's values
-     * @param {Object} childNodes nodeList
-     * @returns {String}
-     */
-    childNodesToString (childNodes) {
-      childNodes = Array.prototype.slice.call(childNodes)
-      let combinedNodes = ''
-      for (let i = 0; i < childNodes.length; i++) {
-        if (childNodes[i].nodeName === '#text') {
-          combinedNodes = combinedNodes + childNodes[i].data
-        } else if (childNodes[i].nodeName === 'BR') {
-          combinedNodes = combinedNodes + ' '
-        } else if (childNodes[i].nodeName === 'IMG') {
-          combinedNodes = combinedNodes + childNodes[i].alt
-        }
-      }
-      return combinedNodes
-    },
-    /**
      * Set current caret position
      */
     setCaretPosition () {
