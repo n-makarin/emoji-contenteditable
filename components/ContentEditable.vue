@@ -150,15 +150,6 @@ export default {
       this.$emit('input', bubblingData)
     },
     /**
-     * Append data to contentEditable
-     * @param {String} data
-     */
-    appendContent (data) {
-      this.removeLastBrTag()
-      emoji.fillArea(data, this.$refs.contentEditable, this.emojiSize)
-      caret.setEndPosition(this.$refs.contentEditable)
-    },
-    /**
      * Add inserting data inside existing node
      * @param {String} data
      */
