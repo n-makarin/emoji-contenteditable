@@ -94,8 +94,8 @@ export default {
     updateValue (eventType, data) {
       this.event = eventType
       const ref = this.$refs.contentEditable
-      const addInsideEventTeypes = ['paste', 'drop', 'selectEmoji']
-      if (addInsideEventTeypes.includes(eventType)) {
+      const addInsideEventTypes = ['paste', 'drop', 'selectEmoji']
+      if (addInsideEventTypes.includes(eventType)) {
         this.$emit('input', emoji.parseToString(ref.innerHTML))
         return null
       }
