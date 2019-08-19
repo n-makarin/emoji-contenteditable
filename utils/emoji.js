@@ -54,11 +54,11 @@ export default {
    * @returns { data: {Array}, imageList: {Array} }
    */
   prepareToSplitContent (data) {
-    let imageList = getImagesList(data)
+    let imageList = getImageList(data)
     // if it already has imageList we don't need to parse data with twemoji
     if (imageList.length === 0) {
       data = twemoji.parse(data)
-      imageList = getImagesList(data)
+      imageList = getImageList(data)
     }
 
     for (let i = 0; i < imageList.length; i++) {
@@ -144,7 +144,7 @@ export default {
    * @returns {String}
    */
   parseToString (value) {
-    const imagesList = getImagesList(value)
+    const imagesList = getImageList(value)
     for (let i = 0; i < imagesList.length; i++) {
       const emoji = this.getAttrValue('alt', imagesList[i])
       value = value.replace(imagesList[i], emoji)
@@ -219,7 +219,7 @@ export default {
  * @param {String} string
  * @returns {Array}
  */
-function getImagesList (string) {
+function getImageList (string) {
   const imageRegex = /<img[^>]* src="([^"]*)"[^>]*>/ig
   return string.match(imageRegex) || []
 }
