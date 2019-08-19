@@ -115,7 +115,7 @@ export default {
      * Handle Enter's keydown to prevent adding <div> on line breaking
      * @param {Object} e Event
      * @issueDiscussion https://stackoverflow.com/questions/18552336/prevent-contenteditable-adding-div-on-enter-chrome
-     * @returns {Any}
+     * @returns {any}
      */
     keydown (e) {
       const enterKeyCode = 13
@@ -142,7 +142,7 @@ export default {
      * @param {String} eventType Which event is occured
      * @param {String} data Data to concat it with innerHTML content
      * e.g.: emoji, paste data or drop data
-     * @returns {Any}
+     * @returns {any}
      */
     updateValue (eventType, data) {
       let bubblingData = emoji.parseToString(this.$refs.contentEditable.innerHTML)
