@@ -105,10 +105,11 @@ export default {
     return data
   },
   /**
-   * Append emoji to reference
+   * Append emoji to referenced html tag
    * @param {String} emoji Image tag
    * @param {Object} ref Html reference
    * @param {Number} emojiSize
+   * @returns {any}
    */
   appendEmoji (emoji, ref, emojiSize) {
     if (!emoji || emoji.length === 0) { return null }
