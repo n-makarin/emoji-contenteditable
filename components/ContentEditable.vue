@@ -69,6 +69,13 @@ export default {
       this.addInside(emojiImage)
       this.updateValue('selectEmoji', newValue)
       this.$emit('clearEmoji')
+    },
+    /**
+     * Reset content, if value from v-model is empty
+     */
+    value (newValue, oldValue) {
+      if (newValue) { return null }
+      this.$refs.contentEditable.innerHTML = ''
     }
   },
   methods: {
