@@ -76,6 +76,7 @@ export default {
     value (newValue, oldValue) {
       if (newValue) { return null }
       this.$refs.contentEditable.innerHTML = ''
+      this.caretPosition = { nodeIndex: 0, textIndex: 0 }
     }
   },
   methods: {
