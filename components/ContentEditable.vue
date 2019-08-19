@@ -17,6 +17,8 @@
 import emoji from '@/utils/emoji'
 import caret from '@/utils/caret'
 
+const brTag = '<br>'
+
 export default {
   name: 'ContentEditable',
   props: {
@@ -118,7 +120,7 @@ export default {
     keydown (e) {
       const enterKeyCode = 13
       if (e.keyCode === enterKeyCode) {
-        document.execCommand('insertHTML', false, '<br><br>')
+        document.execCommand('insertHTML', false, brTag + brTag)
         e.preventDefault()
       }
     },
@@ -152,6 +154,7 @@ export default {
     /**
      * Add data inside existing node
      * @param {String} data Data to add
+     * @returns {any}
      */
     addInsideChildNode (data) {
       const ref = this.$refs.contentEditable
@@ -165,11 +168,11 @@ export default {
       caret.setPosition(ref, this.caretPosition)
     },
     /**
-     * Replace double <br> tags to one <br>
+     * Remove last <br> tag
+     * @returns {any}
      */
     removeLastBrTag () {
       const ref = this.$refs.contentEditable
-      const brTag = '<br>'
       if (ref.innerHTML.slice(-brTag.length) === brTag) {
         ref.innerHTML = ref.innerHTML.slice(0, ref.innerHTML.length - brTag.length)
         caret.setEndPosition(ref)
