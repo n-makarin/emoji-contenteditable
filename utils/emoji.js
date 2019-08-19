@@ -209,7 +209,7 @@ export default {
     }
     result = beginning.concat(insertingContent, ending)
     result = mergeTextElements(result)
-    result = addEndTextElement(result, caretPosition)
+    result = appendTextElement(result, caretPosition)
     return result
   }
 }
@@ -291,7 +291,7 @@ function getCaretPositionStep (innerHTMLContent, combinedSplittedContent, insert
  * @param {Array} array Combined splitted content
  * @returns {Array}
  */
-function addEndTextElement (array, caretPosition) {
+function appendTextElement (array, caretPosition) {
   const targetIndex = array[caretPosition.nodeIndex + 1] ? caretPosition.nodeIndex + 1 : caretPosition.nodeIndex
   const tergetElement = array[targetIndex]
   const isEmptyTextElement = tergetElement.hasOwnProperty('text') && tergetElement.text.length === 0
