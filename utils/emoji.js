@@ -1,8 +1,8 @@
 import twemoji from 'twemoji'
 
-const imgKey = '[[img]]'
-const brKey = '[[br]]'
-const splitter = '[[/]]'
+const IMG_KEY = '[[img]]'
+const BR_KEY = '[[br]]'
+const SPLITTER_KEY = '[[/]]'
 
 export default {
   /**
@@ -62,11 +62,11 @@ export default {
     }
 
     for (let i = 0; i < imageList.length; i++) {
-      data = data.replace(imageList[i], splitter + imgKey + splitter)
+      data = data.replace(imageList[i], SPLITTER_KEY + IMG_KEY + SPLITTER_KEY)
     }
-    data = data.replace(/<br>/g, splitter + brKey + splitter)
+    data = data.replace(/<br>/g, SPLITTER_KEY + BR_KEY + SPLITTER_KEY)
     data = escapeHtml(data)
-    data = data.split(splitter)
+    data = data.split(SPLITTER_KEY)
     data = data.filter(element => element !== '')
     return { data, imageList }
   },
@@ -87,12 +87,12 @@ export default {
     const imageList = preparedData.imageList
     data = preparedData.data
     for (let i = 0; i < data.length; i++) {
-      if (data[i] === imgKey) {
+      if (data[i] === IMG_KEY) {
         data[i] = {
           img: imageList[imageCounter]
         }
         imageCounter++
-      } else if (data[i] === brKey) {
+      } else if (data[i] === BR_KEY) {
         data[i] = {
           br: true
         }
