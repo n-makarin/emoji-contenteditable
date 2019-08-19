@@ -1,5 +1,9 @@
 import twemoji from 'twemoji'
 
+const imgKey = '[[img]]'
+const brKey = '[[br]]'
+const splitter = '[[/]]'
+
 export default {
   /**
    * Insert splitted content to splitted innerHTML content
@@ -45,21 +49,17 @@ export default {
     }
   },
   /**
-   * Parse value and split it on text and image content
+   * Prepare data to split string to array with text, img or br nodes
    * @param {String} data
-   * @returns {Array}
+   * @returns { data: {Array}, imageList: {Array} }
    */
-  getSplittedContent (data) {
+  prepareToSplitContent (data) {
     let imageList = getImagesList(data)
     // if it already has imageList we don't need to parse data with twemoji
     if (imageList.length === 0) {
       data = twemoji.parse(data)
       imageList = getImagesList(data)
     }
-    const imgKey = '[[img]]'
-    const brKey = '[[br]]'
-    const splitter = '[[/]]'
-    let imageCounter = 0
 
     for (let i = 0; i < imageList.length; i++) {
       data = data.replace(imageList[i], splitter + imgKey + splitter)
@@ -68,6 +68,24 @@ export default {
     data = escapeHtml(data)
     data = data.split(splitter)
     data = data.filter(element => element !== '')
+    return { data, imageList }
+  },
+  /**
+   * Split data to array with text, img or br nodes
+   * @param {String} data
+   * @returns {Array}
+   * @example
+   * [
+   *  {text: "some text"},
+   *  {br: true},
+   *  {img: '<img src=".../>'}
+   * ]
+   */
+  getSplittedContent (data) {
+    let imageCounter = 0
+    const preparedData = this.prepareToSplitContent(data)
+    const imageList = preparedData.imageList
+    data = preparedData.data
     for (let i = 0; i < data.length; i++) {
       if (data[i] === imgKey) {
         data[i] = {
