@@ -51,6 +51,7 @@ export default {
       return {
         ...this.$listeners,
         input: this.input,
+        keydown: this.keydown,
         paste: this.paste,
         drop: this.drop,
         keyup: this.setCaretPosition,
@@ -72,8 +73,21 @@ export default {
   },
   methods: {
     input (e) {
+      if (!e.data) { return null }
       this.updateValue(e.type)
       e.preventDefault()
+    },
+    /**
+     * Handle Enter's keydown to prevent adding <div> on line breaking
+     * @param {Object} e Event
+     * @issueDiscussion https://stackoverflow.com/questions/18552336/prevent-contenteditable-adding-div-on-enter-chrome
+     * @returns {Any}
+     */
+    keydown (e) {
+      if (e.keyCode === 13) {
+        document.execCommand('insertHTML', false, '<br><br>')
+        e.preventDefault()
+      }
     },
     paste (e) {
       const pasteData = (e.clipboardData || window.clipboardData).getData('text')
