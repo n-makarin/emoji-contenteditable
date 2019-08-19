@@ -44,7 +44,8 @@ export default {
   },
   mounted () {
     this.showText = false
-    emoji.fillArea(this.text, this.$refs.container, this.emojiSize)
+    const content = emoji.getSplittedContent(this.text)
+    emoji.fillArea(content, this.$refs.container, this.emojiSize)
     this.isReady = true
   }
 }
