@@ -90,7 +90,7 @@ export default {
     emoji (newValue, oldValue) {
       if (newValue.length === 0) { return null }
       const emojiImage = emoji.getEmojiImageTag(newValue)
-      this.addInside(emojiImage)
+      this.addInsideChildNode(emojiImage)
       this.updateValue('selectEmoji', newValue)
       this.$emit('clearEmoji')
     },
@@ -124,13 +124,13 @@ export default {
     },
     paste (e) {
       const pasteData = (e.clipboardData || window.clipboardData).getData('text')
-      this.addInside(pasteData)
+      this.addInsideChildNode(pasteData)
       this.updateValue(e.type, pasteData)
       e.preventDefault()
     },
     drop (e) {
       const dropData = e.dataTransfer.getData('Text')
-      this.addInside(dropData)
+      this.addInsideChildNode(dropData)
       this.updateValue(e.type, dropData)
       e.preventDefault(dropData)
     },
@@ -150,12 +150,13 @@ export default {
       this.$emit('input', bubblingData)
     },
     /**
-     * Add inserting data inside existing node
-     * @param {String} data
+     * Add data inside existing node
+     * @param {String} data Data to add
      */
-    addInside (data) {
+    addInsideChildNode (data) {
       const ref = this.$refs.contentEditable
       this.removeLastBrTag()
+      // insertToChildNode and get caretPositionStep
       const caretPositionStep = emoji.insertToChildNode(ref, data, this.caretPosition, this.emojiSize)
       this.caretPosition = {
         nodeIndex: this.caretPosition.nodeIndex + caretPositionStep.nodeCount,
