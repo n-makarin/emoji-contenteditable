@@ -22,6 +22,7 @@
           type="text"
         />
       </div>
+      <button class="contentEditable__clean-btn" @click="contentEditableText = null">Clean</button>
     </section>
     <h1>Text with emoji</h1>
     <section class="with-emoji">
@@ -113,6 +114,11 @@ h1 {
     }
     &__item:first-child {
       margin-bottom 30px
+    }
+    &__clean-btn {
+      align-self flex-start
+      margin-top 10px
+      padding 3px 5px
     }
   }
 
