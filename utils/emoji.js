@@ -21,13 +21,13 @@ export default {
     return caretPositionStep
   },
   /**
-   * Fill referenced area with parsed content
-   * @param {String|Array} content
+   * Fill referenced area with parsed content.
+   * Create text, img or <br> tag nodes
+   * @param {Array} splittedContent
    * @param {Object} ref Html reference
    * @param {Number} emojiSize
    */
-  fillArea (content, ref, emojiSize) {
-    const splittedContent = typeof content === 'string' ? this.getSplittedContent(content) : content
+  fillArea (splittedContent, ref, emojiSize) {
     for (let i = 0; i < splittedContent.length; i++) {
       // text
       if (splittedContent[i].text) {
@@ -37,6 +37,8 @@ export default {
       // emoji
       } else if (splittedContent[i].img) {
         this.appendEmoji(splittedContent[i].img, ref, emojiSize)
+
+      // <br> tag
       } else if (splittedContent[i].br) {
         ref.append(document.createElement('br'))
       }
