@@ -116,7 +116,8 @@ export default {
      * @returns {Any}
      */
     keydown (e) {
-      if (e.keyCode === 13) {
+      const enterKeyCode = 13
+      if (e.keyCode === enterKeyCode) {
         document.execCommand('insertHTML', false, '<br><br>')
         e.preventDefault()
       }
@@ -135,16 +136,18 @@ export default {
     },
     /**
      * Update value binded with v-model
-     * @param {String} eventType
+     * and emit this data with 'input' action
+     * @param {String} eventType Which event is occured
+     * @param {String} data Data to concat it with innerHTML content
+     * e.g.: emoji, paste data or drop data
+     * @returns {Any}
      */
     updateValue (eventType, data) {
-      const ref = this.$refs.contentEditable
-      const addInsideEventTypes = ['paste', 'drop', 'selectEmoji']
-      if (addInsideEventTypes.includes(eventType)) {
-        this.$emit('input', emoji.parseToString(ref.innerHTML))
-        return null
+      let bubblingData = emoji.parseToString(this.$refs.contentEditable.innerHTML)
+      if (data && !['paste', 'drop', 'selectEmoji'].includes(eventType)) {
+        bubblingData = bubblingData + data
       }
-      this.$emit('input', emoji.parseToString(ref.innerHTML) + (data || ''))
+      this.$emit('input', bubblingData)
     },
     /**
      * Append data to contentEditable
