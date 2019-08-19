@@ -17,7 +17,7 @@ export default {
   insertToChildNode (ref, data, caretPosition, emojiSize) {
     const innerHTMLContent = this.getSplittedContent(ref.innerHTML)
     const insertingContent = this.getSplittedContent(data)
-    const combinedSplittedContent = this.getCombinedSplittedContent(innerHTMLContent, insertingContent, caretPosition)
+    const combinedSplittedContent = this.getCombinedContent(innerHTMLContent, insertingContent, caretPosition)
     ref.innerHTML = ''
     this.fillArea(combinedSplittedContent, ref, emojiSize)
 
@@ -126,7 +126,7 @@ export default {
     ref.appendChild(img)
   },
   /**
-  * Returns attribute value from tag, represented as string
+  * Returns attribute value from tag in string format
   * @param {String} attr
   * @param {String} tagString
   * @returns {String}
@@ -187,7 +187,7 @@ export default {
    * @param {Object} caretPosition
    * @returns {Array}
    */
-  getCombinedSplittedContent (innerHTMLContent, insertingContent, caretPosition) {
+  getCombinedContent (innerHTMLContent, insertingContent, caretPosition) {
     if (typeof caretPosition.nodeIndex !== 'number') {
       return innerHTMLContent.concat(insertingContent)
     }
